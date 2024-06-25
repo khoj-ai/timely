@@ -129,11 +129,11 @@ month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'O
 doc_templates_end = [" Created {val}", " Published {val}", " Written {val}", " Released {val}", " Posted {val}"]
 doc_templates_start = ["Created {val} ", "Published {val} ", "Written {val} ", "Released {val} ", "Posted {val} "]
 
-dataset = open("csv/wikihow_date_aware_mini_v3.csv", "w", newline="")
+dataset = open("csv/wikihow_date_aware_mini_v5.csv", "w", newline="")
 writer = csv.writer(dataset, delimiter="|")
 writer.writerow(["Query", "Document"])
 
-total_queries = 700
+total_queries = 3000
 j=0
 while j < total_queries:
     if j % 10 == 0:
@@ -268,8 +268,9 @@ for keys in mega_keys:
                 i += 1
         print(f"Reinforced {keys} with {j} entries")
 i = 0
-num_reinforcements = 300
-while i < num_reinforcements:
+j = 0
+num_reinforcements = 3000
+while j < num_reinforcements:
     key = random.choice(list(season_dict.keys()))
     val = random.choice(season_dict[key])
     print(key,val)
@@ -290,8 +291,10 @@ while i < num_reinforcements:
     try:
         writer.writerow([query_text, doc_text])
         i += 1
+        j += 1
     except:
         print("error for ", val)
+        i += 1
 
     
     
