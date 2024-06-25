@@ -48,33 +48,51 @@ def is_similar(start_date1, end_date1, start_date2, end_date2):
     #     return False
     return (start_score2 <= start_score1 <= end_score2) or (start_score2 <= end_score1 <= end_score2)
 
-for i in range(6000):
-    val = random.choice(list(value_computed_dict.keys()))
+# Store the keys in a list once to avoid repeated list conversion
+value_keys = list(value_computed_dict.keys())
+mega_keys = list(mega_bins.keys())
+print("bins: ", len(mega_keys))
+for i in range(30000):
+    val = random.choice(value_keys)
+    val_split = value_computed_dict[val].split("-")
+    
     if "Computed" in value_computed_dict[val]:
         continue
+    
+    start_date1, end_date1 = val_split[0], val_split[1]
+    
+    # If "xx" is present, modify start_date1 and end_date1
     if "xx" in value_computed_dict[val]:
-        start_date1 = value_computed_dict[val].split("-")[0]
-        end_date1 = value_computed_dict[val].split("-")[1]
-        for key in mega_bins.keys():
-            start_date2 = value_computed_dict[key].split("-")[0]
-            end_date2 = value_computed_dict[key].split("-")[1]
-            #replace xx with year of start_date2 in start_date1
-            if "xx" in start_date1:
-                start_date1 = start_date1.replace("xx", start_date2.split("/")[2].zfill(2))
-            if "xx" in end_date1:
-                end_date1 = end_date1.replace("xx", start_date2.split("/")[2].zfill(2))
-            if is_similar(start_date1, end_date1, start_date2, end_date2):
+        j = 0
+        for key in mega_keys:
+            j += 1
+            if j > 1000:
+                break
+            dates = value_computed_dict[key].split("-")
+            start_date2, end_date2 = dates[0], dates[1]
+            year_part = start_date2.split("/")[2].zfill(2)
+            mod_start_date1 = start_date1.replace("xx", year_part)
+            mod_end_date1 = end_date1.replace("xx", year_part)
+            
+            if is_similar(mod_start_date1, mod_end_date1, start_date2, end_date2):
                 mega_bins[key].append(val)
+                break
     else:
-        start_date1 = value_computed_dict[val].split("-")[0]
-        end_date1 = value_computed_dict[val].split("-")[1]
-        for key in mega_bins.keys():
-            start_date2 = value_computed_dict[key].split("-")[0]
-            end_date2 = value_computed_dict[key].split("-")[1]
+        j = 0
+        for key in mega_keys:
+            j += 1
+            if j > 1000:
+                break
+            dates = value_computed_dict[key].split("-")
+            start_date2, end_date2 = dates[0], dates[1]
+            
             if is_similar(start_date1, end_date1, start_date2, end_date2):
                 mega_bins[key].append(val)
-    if(i % 100 == 0):
-        print("mega bin processing: ", i) 
+                break
+    
+    if i % 100 == 0:
+        print("mega bin processing:", i)
+ 
 # print(mega_bins)
 #print mega bin of May 2019
 print(f"May 2019: {mega_bins["May 2019"]}")
@@ -111,20 +129,20 @@ month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'O
 doc_templates_end = [" Created {val}", " Published {val}", " Written {val}", " Released {val}", " Posted {val}"]
 doc_templates_start = ["Created {val} ", "Published {val} ", "Written {val} ", "Released {val} ", "Posted {val} "]
 
-dataset = open("csv/wikihow_date_aware_mini.csv", "w", newline="")
+dataset = open("csv/wikihow_date_aware_mini_v3.csv", "w", newline="")
 writer = csv.writer(dataset, delimiter="|")
 writer.writerow(["Query", "Document"])
 
-total_queries = 1000
-i=0
-while i < total_queries:
-    if i % 10 == 0:
-        print("processing: ", i)
+total_queries = 700
+j=0
+while j < total_queries:
+    if j % 10 == 0:
+        print("processing: ", j)
     random.seed(datetime.now().timestamp())
     val = random.choice(list(value_computed_dict.keys()))
     if "Computed" in value_computed_dict[val]:
         continue
-    if ("xx" in value_computed_dict[val] or val.count("/") == 2) and random.randint(0,10) > 5:
+    if ("xx" in value_computed_dict[val] or val.count("/") == 2) and random.randint(0,100) > 90:
         start_or_end = random.randint(0, 1)
         query_text = modify_query(i, val, start_or_end)
         if val.count("/") == 1:
@@ -161,12 +179,21 @@ while i < total_queries:
         try:
             writer.writerow([query_text, doc_text])
             i += 1
+            j += 1
         except:
             print("error for ", val)
-    elif any(month in val for month in month_short) and random.randint(0,10) > 5:
+            i += 1
+            continue
+    elif any(month in val for month in month_short):
         start_or_end = random.randint(0, 1)
         query_text = modify_query(i, val, start_or_end)
         start_date = value_computed_dict[val].split("-")[0]
+        if "xx" in start_date:
+            random_year = str(random.randint(0, 49)).zfill(2)
+            if random.randint(0, 1) == 0:
+                start_date = start_date.replace("xx", random_year)
+            else:
+                start_date = start_date.replace("xx", "")
         #change day to random day from 01 to 26
         random_day = str(random.randint(1, 26)).zfill(2)
         start_date = start_date.split("/")
@@ -181,25 +208,91 @@ while i < total_queries:
         try:
             writer.writerow([query_text, doc_text])
             i += 1
+            j += 1
         except:
             print("error for ", val)
-    elif val in mega_bins.keys():
-        if "current date" in val:
-            val = val.replace(" current date:", ". Today:")
-            val = val.replace("current date:", ". Today:")
-        start_or_end = random.randint(0, 1)
-        query_text = modify_query(i, val, start_or_end)
-        if mega_bins[val] == []:
-            continue
-        selected_val = random.choice(mega_bins[val])
-        start_or_end = random.randint(0, 1)
-        if start_or_end == 0:
-            formatted_val = random.choice(doc_templates_end).format(val=selected_val)
-        else:
-            formatted_val = random.choice(doc_templates_start).format(val=selected_val)
-        doc_text = modify_doc(i, formatted_val, start_or_end)
-        try:
-            writer.writerow([query_text, doc_text])
             i += 1
-        except:
-            print("error for ", val)
+            continue
+    elif val in mega_keys:
+        for k in range(10):
+            if "current date" in val:
+                val = val.replace(" current date:", ". Today:")
+                val = val.replace("current date:", ". Today:")
+            if mega_bins[val] == []:
+                continue
+            start_or_end = random.randint(0, 1)
+            query_text = modify_query(i, val, start_or_end)
+            selected_val = random.choice(mega_bins[val])
+            start_or_end = random.randint(0, 1)
+            if start_or_end == 0:
+                formatted_val = random.choice(doc_templates_end).format(val=selected_val)
+            else:
+                formatted_val = random.choice(doc_templates_start).format(val=selected_val)
+            doc_text = modify_doc(i, formatted_val, start_or_end)
+            try:
+                writer.writerow([query_text, doc_text])
+                i += 1
+                j += 1
+            except:
+                print("error for ", val)
+                i += 1
+                continue
+            val = random.choice(mega_keys)
+# reinforce Winter, Summer, Spring, Fall, Monsoon by artificially adding more entries to the dataset
+i = 0
+j = 0
+num_reinforcements = 300
+reinforcements = ["Winter", "Summer", "Spring", "Fall", "Monsoon"]
+season_dict = {}
+for keys in mega_keys:
+    if i == num_reinforcements:
+        break
+    if any(reinforcement in keys for reinforcement in reinforcements):
+        j = 0 
+        season_dict[keys] = []
+        while j < 6:
+            val = random.choice(value_keys)
+            val_split = value_computed_dict[val].split("-")
+            if "Computed" in value_computed_dict[val]:
+                continue       
+            start_date1, end_date1 = val_split[0], val_split[1]
+            dates = value_computed_dict[keys].split("-")
+            start_date2, end_date2 = dates[0], dates[1]
+            year_part = start_date2.split("/")[2].zfill(2)
+            start_date1 = start_date1.replace("xx", year_part)
+            end_date1 = end_date1.replace("xx", year_part)
+            if is_similar(start_date1, end_date1, start_date2, end_date2):
+                print(start_date1, end_date1, start_date2, end_date2)
+                season_dict[keys].append(val)
+                j += 1
+                i += 1
+        print(f"Reinforced {keys} with {j} entries")
+i = 0
+num_reinforcements = 300
+while i < num_reinforcements:
+    key = random.choice(list(season_dict.keys()))
+    val = random.choice(season_dict[key])
+    print(key,val)
+    if "xx" in value_computed_dict[val]:
+        if random.randint(0, 1) == 0:
+            val = val.replace("xx", str(random.randint(0, 49)).zfill(2))
+        else:
+            val = val.replace("xx", "")
+    start_or_end = random.randint(0, 1)
+    query_text = modify_query(i, key, start_or_end)
+    selected_val = val
+    start_or_end = random.randint(0, 1)
+    if start_or_end == 0:
+        formatted_val = random.choice(doc_templates_start).format(val=selected_val)
+    else:
+        formatted_val = random.choice(doc_templates_end).format(val=selected_val)
+    doc_text = modify_doc(i, formatted_val, start_or_end)
+    try:
+        writer.writerow([query_text, doc_text])
+        i += 1
+    except:
+        print("error for ", val)
+
+    
+    
+    
