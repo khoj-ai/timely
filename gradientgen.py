@@ -30,7 +30,7 @@ def is_similar(start_date1, end_date1, start_date2, end_date2):
     end_score1 = scorer(end_date1)
     start_score2 = scorer(start_date2)
     end_score2 = scorer(end_date2)
-    return (start_score2 <= start_score1 <= end_score2) or (start_score2 <= end_score1 <= end_score2)
+    return (start_score2 <= start_score1 <= end_score2) or (start_score2 <= end_score1 <= end_score2) or (start_score1 <= start_score2 <= end_score1) or (start_score1 <= end_score2 <= end_score1)
 
 def gradient(start_date1, end_date1, start_date2, end_date2):
     if is_similar(start_date1, end_date1, start_date2, end_date2):
@@ -52,11 +52,13 @@ with open('csv/bulk.csv') as file:
             continue
         value_computed_dict[row[0]] = row[1]
 
-gradient_count = 1000
+gradient_count = 30000
 i = 0
 values = list(value_computed_dict.keys())
 while i < gradient_count:
     query = random.choice(values)
+    if (query.count("/") == 2 and random.random() < 0.5):
+        continue
     document = value_computed_dict[query].split("-")[0]
     month, day, year = map(int, document.split('/'))
     if random.random() < 0.7:
@@ -66,11 +68,20 @@ while i < gradient_count:
     if random.random() < 0.8:
         day = str(random.randint(1, 28)).zfill(2)
     startd = f"{month}/{day}/{year}"
+    #make sure each item in startd is 2 digits
+    vals = startd.split("/")
+    for j in range(len(vals)):
+        vals[j] = vals[j].zfill(2)
+    startd = "/".join(vals)
     #create an artificial end date that doesn't break any rules. eg. start date < end date and if start date is day 28 end date has to 28. if its 27 end date can be 28 or 27 etc
     endd = startd
     startq, endq = value_computed_dict[query].split("-")
     score = gradient(startq, endq, startd, endd)
-    writer.writerow([startq+"-"+endq, startd+"-"+endd, score])
+    if score == 0 and random.random() < 0.4:
+        continue
+    if score == 1 and random.random() < 0.5:
+        continue
+    writer.writerow([query, startd, score])
     i += 1
 
 
