@@ -52,7 +52,7 @@ def is_similar(start_date1, end_date1, start_date2, end_date2):
 value_keys = list(value_computed_dict.keys())
 mega_keys = list(mega_bins.keys())
 print("bins: ", len(mega_keys))
-for i in range(30000):
+for i in range(100000):
     val = random.choice(value_keys)
     val_split = value_computed_dict[val].split("-")
     
@@ -66,7 +66,7 @@ for i in range(30000):
         j = 0
         for key in mega_keys:
             j += 1
-            if j > 1000:
+            if j > 500:
                 break
             dates = value_computed_dict[key].split("-")
             start_date2, end_date2 = dates[0], dates[1]
@@ -81,7 +81,7 @@ for i in range(30000):
         j = 0
         for key in mega_keys:
             j += 1
-            if j > 1000:
+            if j > 500:
                 break
             dates = value_computed_dict[key].split("-")
             start_date2, end_date2 = dates[0], dates[1]
@@ -129,11 +129,11 @@ month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'O
 doc_templates_end = [" Created {val}", " Published {val}", " Written {val}", " Released {val}", " Posted {val}"]
 doc_templates_start = ["Created {val} ", "Published {val} ", "Written {val} ", "Released {val} ", "Posted {val} "]
 
-dataset = open("csv/wikihow_date_aware_mini_v5.csv", "w", newline="")
+dataset = open("csv/wikihow_date_aware_gradient_v1.csv", "w", newline="")
 writer = csv.writer(dataset, delimiter="|")
-writer.writerow(["Query", "Document"])
+writer.writerow(["Query", "Document", "Score"])
 
-total_queries = 3000
+total_queries = 10000
 j=0
 while j < total_queries:
     if j % 10 == 0:
@@ -177,7 +177,7 @@ while j < total_queries:
                 start_date = random.choice(doc_templates_start).format(val=start_date)
             doc_text = modify_doc(i, start_date, start_or_end)
         try:
-            writer.writerow([query_text, doc_text])
+            writer.writerow([query_text, doc_text, 1])
             i += 1
             j += 1
         except:
@@ -206,7 +206,7 @@ while j < total_queries:
             start_date = random.choice(doc_templates_start).format(val=start_date)
         doc_text = modify_doc(i, start_date, start_or_end)
         try:
-            writer.writerow([query_text, doc_text])
+            writer.writerow([query_text, doc_text, 1])
             i += 1
             j += 1
         except:
@@ -230,7 +230,7 @@ while j < total_queries:
                 formatted_val = random.choice(doc_templates_start).format(val=selected_val)
             doc_text = modify_doc(i, formatted_val, start_or_end)
             try:
-                writer.writerow([query_text, doc_text])
+                writer.writerow([query_text, doc_text, 1])
                 i += 1
                 j += 1
             except:
@@ -241,7 +241,7 @@ while j < total_queries:
 # reinforce Winter, Summer, Spring, Fall, Monsoon by artificially adding more entries to the dataset
 i = 0
 j = 0
-num_reinforcements = 300
+num_reinforcements = 10000
 reinforcements = ["Winter", "Summer", "Spring", "Fall", "Monsoon"]
 season_dict = {}
 for keys in mega_keys:
@@ -269,7 +269,7 @@ for keys in mega_keys:
         print(f"Reinforced {keys} with {j} entries")
 i = 0
 j = 0
-num_reinforcements = 3000
+num_reinforcements = 10000
 while j < num_reinforcements:
     key = random.choice(list(season_dict.keys()))
     val = random.choice(season_dict[key])
@@ -289,7 +289,7 @@ while j < num_reinforcements:
         formatted_val = random.choice(doc_templates_end).format(val=selected_val)
     doc_text = modify_doc(i, formatted_val, start_or_end)
     try:
-        writer.writerow([query_text, doc_text])
+        writer.writerow([query_text, doc_text, 1])
         i += 1
         j += 1
     except:
