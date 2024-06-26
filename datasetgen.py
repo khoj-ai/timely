@@ -273,7 +273,7 @@ num_reinforcements = 10000
 while j < num_reinforcements:
     key = random.choice(list(season_dict.keys()))
     val = random.choice(season_dict[key])
-    print(key,val)
+    # print(key,val)
     if "xx" in value_computed_dict[val]:
         if random.randint(0, 1) == 0:
             val = val.replace("xx", str(random.randint(0, 49)).zfill(2))
@@ -296,6 +296,65 @@ while j < num_reinforcements:
         print("error for ", val)
         i += 1
 
-    
+#similar process with reinforcement for strings that have "current date:" in them
+i = 0
+j = 0
+num_reinforcements = 10000
+reinforcements = ["current date:"]
+current_date_dict = {}  
+print(mega_bins)
+for keys in value_computed_dict.keys():
+    if i == num_reinforcements:
+        break
+    if any(reinforcement in keys for reinforcement in reinforcements):
+        j = 0 
+        current_date_dict[keys] = []
+        while j < 6:
+            val = random.choice(value_keys)
+            val_split = value_computed_dict[val].split("-")
+            if "Computed" in value_computed_dict[val]:
+                continue       
+            start_date1, end_date1 = val_split[0], val_split[1]
+            dates = value_computed_dict[keys].split("-")
+            start_date2, end_date2 = dates[0], dates[1]
+            year_part = start_date2.split("/")[2].zfill(2)
+            start_date1 = start_date1.replace("xx", year_part)
+            end_date1 = end_date1.replace("xx", year_part)
+            if is_similar(start_date1, end_date1, start_date2, end_date2):
+                print(start_date1, end_date1, start_date2, end_date2)
+                current_date_dict[keys].append(val)
+                j += 1
+                i += 1
+        print(f"Reinforced {keys} with {j} entries")
+
+i = 0
+j = 0
+num_reinforcements = 10000
+print("keys date dict: ", len(current_date_dict.keys()))
+while j < num_reinforcements:
+    key = random.choice(list(current_date_dict.keys()))
+    val = random.choice(current_date_dict[key])
+    print(key,val)
+    if "xx" in value_computed_dict[val]:
+        if random.randint(0, 1) == 0:
+            val = val.replace("xx", str(random.randint(0, 49)).zfill(2))
+        else:
+            val = val.replace("xx", "")
+    start_or_end = random.randint(0, 1)
+    query_text = modify_query(i, key, start_or_end)
+    selected_val = val
+    start_or_end = random.randint(0, 1)
+    if start_or_end == 0:
+        formatted_val = random.choice(doc_templates_start).format(val=selected_val)
+    else:
+        formatted_val = random.choice(doc_templates_end).format(val=selected_val)
+    doc_text = modify_doc(i, formatted_val, start_or_end)
+    try:
+        writer.writerow([query_text, doc_text, 1])
+        i += 1
+        j += 1
+    except:
+        print("error for ", val)
+        i += 1
     
     
