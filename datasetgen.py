@@ -18,8 +18,6 @@ def get_dates(date_str):
         date2 = datetime.strptime(dateRange[1], '%m/%d/%Y')
     return date1, date2
 
-# Dictionary to store counts of differences
-difference_counts = {}
 value_computed_dict = {}
 mega_bins = {}
 count = 0
