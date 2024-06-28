@@ -36,9 +36,9 @@ def gradient(start_date1, end_date1, start_date2, end_date2):
     if is_similar(start_date1, end_date1, start_date2, end_date2):
         return 1
     score_diff = min(abs(scorer(start_date1) - scorer(end_date2)), abs(scorer(end_date1) - scorer(start_date2)))
-    if score_diff > 300:
+    if score_diff > 200:
         return 0
-    return 1 - score_diff / 300
+    return 1 - score_diff / 200
 
 dataset = open("csv/gradients_test.csv", "w", newline="")
 writer = csv.writer(dataset, delimiter="|")
@@ -77,11 +77,15 @@ while i < gradient_count:
     endd = startd
     startq, endq = value_computed_dict[query].split("-")
     score = gradient(startq, endq, startd, endd)
-    if score == 0 and random.random() < 0.4:
-        continue
-    if score == 1 and random.random() < 0.5:
-        continue
-    writer.writerow([query, startd, score])
+    # if score == 0 and random.random() < 0.4:
+    #     continue
+    # if score == 1 and random.random() < 0.5:
+    #     continue
+    #remove /n from query and startd
+    query = query.replace("\n", "")
+    startd = startd.replace("\n", "")
+    if score != 0 and score < 0.95:
+        writer.writerow([query, startd, score])
     i += 1
 
 
