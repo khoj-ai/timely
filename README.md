@@ -54,5 +54,6 @@ v5 is currently being developed but is using a similar approach to v4 with a muc
 * Benchmarks are rough scores and can be changed as the benchmarks run on a relatively small sample size
 * Small steps between model versions may have been omitted but general training arguments will be included below.
 
-
+### Contact
+raghav@khoj.dev
 
