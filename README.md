@@ -1,6 +1,6 @@
 ### Introduction
 
-This repository hosts code and datasets related to developing a fine-tuning pipeline for date-aware embeddings model.
+Current embeddings models don't compute embeddings consistently within the context of temporal information. When a query contains temporal information in natural language, documents are not embedded in such a way that they are closer if they have a better temporal match. The purpose of this pipeline is to establish datasets, benchmarks and fine-tuned models that are better in terms of their date arithmetic or date awareness when it comes to document retrieval using queries.
 
 ### Overview Diagrams
 ![image](https://github.com/khoj-ai/timely/assets/62105787/8ddf3529-2d75-44e2-935a-672f21599889)
