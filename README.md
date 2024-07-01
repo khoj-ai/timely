@@ -3,7 +3,7 @@
 This repository hosts code and datasets related to developing a fine-tuning pipeline for date-aware embeddings model.
 
 ### Overview Diagrams
-
+![image](https://github.com/khoj-ai/timely/assets/62105787/8ddf3529-2d75-44e2-935a-672f21599889)
 
 ### Dataset Generation
 
