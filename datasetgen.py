@@ -64,7 +64,7 @@ for i in range(100000):
         j = 0
         for key in mega_keys:
             j += 1
-            if j > 500:
+            if j > 3000:
                 break
             dates = value_computed_dict[key].split("-")
             start_date2, end_date2 = dates[0], dates[1]
@@ -127,14 +127,17 @@ month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'O
 doc_templates_end = [" Created {val}", " Published {val}", " Written {val}", " Released {val}", " Posted {val}"]
 doc_templates_start = ["Created {val} ", "Published {val} ", "Written {val} ", "Released {val} ", "Posted {val} "]
 
-dataset = open("csv/wikihow_date_aware_gradient_v1.csv", "w", newline="")
+dataset = open("csv/wikihow_data_aware_v5.csv", "w", newline="")
 writer = csv.writer(dataset, delimiter="|")
-writer.writerow(["Query", "Document", "Score"])
+writer.writerow(["Query", "Document"])
 
-total_queries = 10000
+i = 0
+total_queries = 240000
 j=0
 while j < total_queries:
-    if j % 10 == 0:
+    if i > 70000:
+        i = 0
+    if j % 10000 == 0:
         print("processing: ", j)
     random.seed(datetime.now().timestamp())
     val = random.choice(list(value_computed_dict.keys()))
@@ -175,7 +178,9 @@ while j < total_queries:
                 start_date = random.choice(doc_templates_start).format(val=start_date)
             doc_text = modify_doc(i, start_date, start_or_end)
         try:
-            writer.writerow([query_text, doc_text, 1])
+            #remove newline from doc_text
+            doc_text = doc_text.replace("\n", "")
+            writer.writerow([query_text, doc_text])
             i += 1
             j += 1
         except:
@@ -204,7 +209,8 @@ while j < total_queries:
             start_date = random.choice(doc_templates_start).format(val=start_date)
         doc_text = modify_doc(i, start_date, start_or_end)
         try:
-            writer.writerow([query_text, doc_text, 1])
+            doc_text = doc_text.replace("\n", "")
+            writer.writerow([query_text, doc_text])
             i += 1
             j += 1
         except:
@@ -228,7 +234,8 @@ while j < total_queries:
                 formatted_val = random.choice(doc_templates_start).format(val=selected_val)
             doc_text = modify_doc(i, formatted_val, start_or_end)
             try:
-                writer.writerow([query_text, doc_text, 1])
+                doc_text = doc_text.replace("\n", "")
+                writer.writerow([query_text, doc_text])
                 i += 1
                 j += 1
             except:
@@ -239,10 +246,12 @@ while j < total_queries:
 # reinforce Winter, Summer, Spring, Fall, Monsoon by artificially adding more entries to the dataset
 i = 0
 j = 0
-num_reinforcements = 10000
+num_reinforcements = 80000
 reinforcements = ["Winter", "Summer", "Spring", "Fall", "Monsoon"]
 season_dict = {}
 for keys in mega_keys:
+    if i > 70000:
+        i = 0
     if i == num_reinforcements:
         break
     if any(reinforcement in keys for reinforcement in reinforcements):
@@ -264,11 +273,13 @@ for keys in mega_keys:
                 season_dict[keys].append(val)
                 j += 1
                 i += 1
-        print(f"Reinforced {keys} with {j} entries")
+        #print(f"Reinforced {keys} with {j} entries")
 i = 0
 j = 0
-num_reinforcements = 10000
+num_reinforcements = 80000
 while j < num_reinforcements:
+    if i > 70000:
+        i = 0
     key = random.choice(list(season_dict.keys()))
     val = random.choice(season_dict[key])
     # print(key,val)
@@ -287,7 +298,8 @@ while j < num_reinforcements:
         formatted_val = random.choice(doc_templates_end).format(val=selected_val)
     doc_text = modify_doc(i, formatted_val, start_or_end)
     try:
-        writer.writerow([query_text, doc_text, 1])
+        doc_text = doc_text.replace("\n", "")
+        writer.writerow([query_text, doc_text])
         i += 1
         j += 1
     except:
@@ -297,11 +309,13 @@ while j < num_reinforcements:
 #similar process with reinforcement for strings that have "current date:" in them
 i = 0
 j = 0
-num_reinforcements = 10000
+num_reinforcements = 80000
 reinforcements = ["current date:"]
 current_date_dict = {}  
 print(mega_bins)
 for keys in value_computed_dict.keys():
+    if i > 70000:
+        i = 0
     if i == num_reinforcements:
         break
     if any(reinforcement in keys for reinforcement in reinforcements):
@@ -319,17 +333,19 @@ for keys in value_computed_dict.keys():
             start_date1 = start_date1.replace("xx", year_part)
             end_date1 = end_date1.replace("xx", year_part)
             if is_similar(start_date1, end_date1, start_date2, end_date2):
-                print(start_date1, end_date1, start_date2, end_date2)
+                #print(start_date1, end_date1, start_date2, end_date2)
                 current_date_dict[keys].append(val)
                 j += 1
                 i += 1
-        print(f"Reinforced {keys} with {j} entries")
+        #print(f"Reinforced {keys} with {j} entries")
 
 i = 0
 j = 0
-num_reinforcements = 10000
+num_reinforcements = 80000
 print("keys date dict: ", len(current_date_dict.keys()))
 while j < num_reinforcements:
+    if i > 70000:
+        i = 0
     key = random.choice(list(current_date_dict.keys()))
     val = random.choice(current_date_dict[key])
     print(key,val)
@@ -348,11 +364,29 @@ while j < num_reinforcements:
         formatted_val = random.choice(doc_templates_end).format(val=selected_val)
     doc_text = modify_doc(i, formatted_val, start_or_end)
     try:
-        writer.writerow([query_text, doc_text, 1])
+        doc_text = doc_text.replace("\n", "")
+        writer.writerow([query_text, doc_text])
         i += 1
         j += 1
     except:
         print("error for ", val)
         i += 1
-    
+
+#throw in standard query and doc pairs
+num_standard = 40000
+i = 0
+j = 0
+while j < num_standard:
+    if i > 70000:
+        i = 0
+    query = modify_query(i, "", 0)
+    doc = modify_doc(i, "", 0)
+    try:
+        doc = doc.replace("\n", "")
+        writer.writerow([query, doc])
+        i += 1
+        j += 1
+    except:
+        print("error for ", val)
+        i += 1
     

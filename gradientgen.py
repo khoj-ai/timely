@@ -36,9 +36,9 @@ def gradient(start_date1, end_date1, start_date2, end_date2):
     if is_similar(start_date1, end_date1, start_date2, end_date2):
         return 1
     score_diff = min(abs(scorer(start_date1) - scorer(end_date2)), abs(scorer(end_date1) - scorer(start_date2)))
-    if score_diff > 200:
+    if score_diff > 100:
         return 0
-    return 1 - score_diff / 200
+    return 1 - score_diff / 100
 
 dataset = open("csv/gradients_test.csv", "w", newline="")
 writer = csv.writer(dataset, delimiter="|")
@@ -52,7 +52,7 @@ with open('csv/bulk.csv') as file:
             continue
         value_computed_dict[row[0]] = row[1]
 
-gradient_count = 30000
+gradient_count = 1000
 i = 0
 values = list(value_computed_dict.keys())
 while i < gradient_count:
