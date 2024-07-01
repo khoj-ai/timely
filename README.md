@@ -4,6 +4,7 @@ This repository hosts code and datasets related to developing a fine-tuning pipe
 
 ### Overview Diagrams
 ![image](https://github.com/khoj-ai/timely/assets/62105787/8ddf3529-2d75-44e2-935a-672f21599889)
+![image](https://github.com/khoj-ai/timely/assets/62105787/288f41da-cd6d-404a-9d71-0abb16c9e5ab)
 
 ### Dataset Generation
 
