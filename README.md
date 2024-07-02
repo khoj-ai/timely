@@ -58,6 +58,13 @@ Currently in training. Same methodology as v5 but trained on A100, batch-size se
 * Benchmarks are rough scores and haven't been built to be overly general at this point
 * Small steps between model versions may have been omitted but general training arguments will be included below.
 
+#### in the works
+- upgrade to title - wikipedia article dataset
+- more formats of date
+- times
+
+
+
 ### Contact
 raghav@khoj.dev
 
