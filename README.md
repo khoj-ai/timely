@@ -55,7 +55,7 @@ Currently in training. Same methodology as v5 but trained on A100, batch-size se
 
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
-* Benchmarks are rough scores and can be changed as the benchmarks run on a relatively small sample size
+* Benchmarks are rough scores and haven't been built to be overly general at this point
 * Small steps between model versions may have been omitted but general training arguments will be included below.
 
 ### Contact
