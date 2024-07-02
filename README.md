@@ -5,7 +5,8 @@ Current embeddings models don't compute embeddings consistently within the conte
 ### Overview Diagrams
 ![image](https://github.com/khoj-ai/timely/assets/62105787/8ddf3529-2d75-44e2-935a-672f21599889)
 ![image](https://github.com/khoj-ai/timely/assets/62105787/288f41da-cd6d-404a-9d71-0abb16c9e5ab)
-![image](https://github.com/khoj-ai/timely/assets/62105787/7a74d870-5c2f-4e42-9df7-2269e978a8fe)
+![image](https://github.com/khoj-ai/timely/assets/62105787/1d389611-a73e-4b33-9298-2fc33fd245a5)
+
 
 
 
@@ -44,10 +45,13 @@ During this trial run we decided to explore possible methodologies to teach our 
 
 #### v4
 
-One interesting thing about the v2 model is that in some cases it was able to handle weakly matched pairings of dates. We decided to train a new model using the simple query, pair strategy of v2 but to introduce a small proportion of pairs that weren't direct matches and instead had dates that were loosely related. This was inspired by nomic's training system where the model is first trained on loosely related data and then contrastively finetuned on higher-quality strongly related data. This method seems to be successful as it lead to almost a 20% improvement on the weakly related benchmark compared to a 12% improvement on our v2 model compared to the base model. In fact, across all our benchmarks the v4 model is able to produce a 15-20% improvement compared to the base model compared to v2 which produces a 10-12% improvement.
+One interesting thing about the v2 model is that in some cases it was able to handle weakly matched pairings of dates. We decided to train a new model using the simple query, pair strategy of v2 but to introduce a small proportion of pairs that weren't direct matches and instead had dates that were loosely related. This was inspired by nomic's training system where the model is first trained on loosely related data and then contrastively finetuned on higher-quality strongly related data. This method seems to be successful as it lead to almost a 20% improvement on the weakly related benchmark compared to a 12% improvement on our v2 model compared to the base model. In fact, across all our benchmarks the v4 model is able to produce a 15% improvement compared to the base model compared to v2 which produces a 10-12% improvement.
 
 #### v5
-v5 is currently being developed but is using a similar approach to v4 with a much larger dataset, and standard pairing to prevent MTEB degradation.
+During the v5 trial run we used a similar methodology to v4 but with a large amount of datapoints: ~440,000. We also removed the small proportion of weakly related date pairings because v5 achieved a 1% higher performance than v4 on our weak pairings benchmarks despite further fine tuning and adjustments. We also increased the amount of high quality natural language data which led to about a 20% improvement compared to the base model across benchmarks.
+
+#### v6
+Currently in training. Same methodology as v5 but trained on A100, batch-size set to 64, and 2,000,000 data points. Large amount of non-date query doc pairings to try and combat MTEB degradation as we increase the number of data pairings and overall dataset size.
 
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
