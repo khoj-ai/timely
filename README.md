@@ -54,6 +54,9 @@ During the v5 trial run we used a similar methodology to v4 but with a large amo
 Currently in training. Same methodology as v5 but trained on A100, batch-size set to 64, and 2,000,000 data points. Large amount of non-date query doc pairings to try and combat MTEB degradation as we increase the number of data pairings and overall dataset size.
 standard: 81% (86% v5)
 hard: V6:  0.7570564516129032 V5:  0.7585685483870968
+long: V6:  0.6913433382137628 V5:  0.6465959004392386 Original:  0.5021961932650073
+
+
 
 
 #### notes
