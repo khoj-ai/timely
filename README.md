@@ -55,6 +55,7 @@ Currently in training. Same methodology as v5 but trained on A100, batch-size se
 standard: 81% (86% v5)
 hard: V6:  0.7570564516129032 V5:  0.7585685483870968
 long: V6:  0.6913433382137628 V5:  0.6465959004392386 Original:  0.5021961932650073
+Banking77Classification V6: 75% V5: 74%
 
 
 
