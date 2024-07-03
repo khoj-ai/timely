@@ -52,10 +52,34 @@ During the v5 trial run we used a similar methodology to v4 but with a large amo
 
 #### v6
 Currently in training. Same methodology as v5 but trained on A100, batch-size set to 64, and 2,000,000 data points. Large amount of non-date query doc pairings to try and combat MTEB degradation as we increase the number of data pairings and overall dataset size.
+
+trial 1
 standard: 81% (86% v5)
 hard: V6:  0.7570564516129032 V5:  0.7585685483870968
 long: V6:  0.6913433382137628 V5:  0.6465959004392386 Original:  0.5021961932650073
 Banking77Classification V6: 75% V5: 74%
+
+batch size 16
+standard:
+V6:  0.8338368580060423
+V5:  0.8600201409869084
+V4:  0.7885196374622356
+Original:  0.5861027190332326
+V2:  0.7935548841893253
+
+hard:
+V6:  0.7424395161290323
+V5:  0.7585685483870968
+V4:  0.7086693548387096
+Original:  0.5544354838709677
+V2:  0.6789314516129032
+
+long:
+V6:  0.6524524158125915
+V5:  0.6465959004392386
+V4:  0.6932650073206442
+Original:  0.5021961932650073
+V2:  0.6278367496339677
 
 
 
