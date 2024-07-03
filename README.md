@@ -52,6 +52,9 @@ During the v5 trial run we used a similar methodology to v4 but with a large amo
 
 #### v6
 Currently in training. Same methodology as v5 but trained on A100, batch-size set to 64, and 2,000,000 data points. Large amount of non-date query doc pairings to try and combat MTEB degradation as we increase the number of data pairings and overall dataset size.
+standard: 81% (86% v5)
+hard: V6:  0.7570564516129032 V5:  0.7585685483870968
+
 
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
