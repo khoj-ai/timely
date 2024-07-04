@@ -117,7 +117,10 @@ V7:  0.641
 V5:  0.627
 Original:  0.467
 
-diverse easy long:
+diverse date heavy:
+V7:  0.99
+V5:  0.967
+Original:  0.674
 
 
 
