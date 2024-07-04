@@ -91,6 +91,13 @@ V7:  0.6866363636363636
 V5:  0.6517272727272727
 Original:  0.5149090909090909
 
+diverse relative date focus:
+
+V7:  0.809
+V5:  0.8445
+Original:  0.532
+
+
 
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
