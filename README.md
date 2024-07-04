@@ -142,6 +142,11 @@ V7:  0.808
 V5:  0.72
 Original:  0.56
 
+diverse semistable (meaning I tried to remove inaccuracies and did some manual verification):
+Fine Tuned nomic-embed-v7:  0.951
+Fine Tuned nomic-embed-v5:  0.902
+Fine Tuned nomic-embed-v2:  0.788
+Original Nomic:  0.642
 
 
 #### notes
