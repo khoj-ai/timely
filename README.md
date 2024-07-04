@@ -107,6 +107,12 @@ V7:  0.987
 V5:  0.952
 Original:  0.638
 
+diverse mini:
+V7:  0.641
+V5:  0.627
+Original:  0.467
+
+
 
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
