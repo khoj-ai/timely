@@ -59,16 +59,6 @@ hard: V6:  0.7570564516129032 V5:  0.7585685483870968
 long: V6:  0.6913433382137628 V5:  0.6465959004392386 Original:  0.5021961932650073
 Banking77Classification V6: 75% V5: 74%
 
-
-#### v7 benchmarking
-
-diverse benchmark: 
-
-V7:  0.6866363636363636
-V5:  0.6517272727272727
-Original:  0.5149090909090909
-
-
 batch size 16
 standard:
 V6:  0.8338368580060423
@@ -92,6 +82,14 @@ Original:  0.5021961932650073
 V2:  0.6278367496339677
 
 
+#### v7 benchmarking
+batch size 64, 900,000 data points, more diverse dataset
+
+diverse benchmark: 
+
+V7:  0.6866363636363636
+V5:  0.6517272727272727
+Original:  0.5149090909090909
 
 
 #### notes
