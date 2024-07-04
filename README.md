@@ -127,7 +127,7 @@ V7:  0.99
 V5:  0.943
 Original:  0.653
 
-diverse natural heavy and close dates (aka hard):
+diverse natural heavy and close dates:
 V7:  0.909
 V5:  0.841
 Original:  0.666
