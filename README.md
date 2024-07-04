@@ -107,10 +107,17 @@ V7:  0.987
 V5:  0.952
 Original:  0.638
 
+diverse easy long:
+V7:  0.992
+V5:  0.9564
+Original:  0.6637
+
 diverse mini:
 V7:  0.641
 V5:  0.627
 Original:  0.467
+
+diverse easy long:
 
 
 
