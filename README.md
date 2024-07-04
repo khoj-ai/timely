@@ -97,6 +97,10 @@ V7:  0.809
 V5:  0.8445
 Original:  0.532
 
+diverse easy:
+V7:  0.987
+V5:  0.952
+Original:  0.638
 
 
 #### notes
