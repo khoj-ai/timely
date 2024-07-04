@@ -123,7 +123,9 @@ V5:  0.967
 Original:  0.674
 
 diverse natural heavy:
-
+V7:  0.99
+V5:  0.943
+Original:  0.653
 
 
 
