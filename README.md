@@ -132,7 +132,7 @@ V7:  0.909
 V5:  0.841
 Original:  0.666
 
-diverse natural heavey and close dates extreme:
+diverse natural heavy and close dates extreme:
 V7:  0.687
 V5:  0.632
 Original:  0.526
