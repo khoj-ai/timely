@@ -137,7 +137,7 @@ V7:  0.687
 V5:  0.632
 Original:  0.526
 
-diverse natural heave and close dates medium (less subjective because randomization applied to year long period where any date is fine:
+diverse natural heave and close dates medium (less subjective because randomization isn't applied to year long period where any date is fine:
 V7:  0.808
 V5:  0.72
 Original:  0.56
