@@ -85,6 +85,11 @@ V2:  0.6278367496339677
 #### v7 benchmarking
 batch size 64, 900,000 data points, more diverse dataset
 
+hard:
+V7:  0.748991935483871
+V5:  0.7585685483870968
+Original:  0.5544354838709677
+
 diverse benchmark: 
 
 V7:  0.6866363636363636
