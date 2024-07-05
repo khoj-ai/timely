@@ -149,6 +149,37 @@ Fine Tuned nomic-embed-v2:  0.788
 Original Nomic:  0.642
 
 
+#### v8
+1.6 million parameters, same strategy as v7, couple of cases included with date in query but matching to document wiht no date
+
+
+##### diverse base (10k)
+* V8:  0.6476363636363637
+* V7:  0.6866363636363636
+* V5:  0.6517272727272727
+* Original:  0.5149090909090909
+
+
+##### diverse date heavy
+- Fine Tuned nomic-embed-v8:  0.992
+- Fine Tuned nomic-embed-v7:  0.99
+- Fine Tuned nomic-embed-v5:  0.967
+- Fine Tuned nomic-embed-v2:  0.868
+- Original Nomic:  0.674
+
+##### diverse semistable (meaning I tried to remove inaccuracies and did some manual verification):
+- Fine Tuned nomic-embed-v8:  0.949
+- Fine Tuned nomic-embed-v7:  0.951
+- Fine Tuned nomic-embed-v5:  0.902
+- Fine Tuned nomic-embed-v2:  0.788
+- Original Nomic:  0.642
+
+##### diverse close dates medium
+* V8:  0.797
+* V7:  0.808
+* V5:  0.72
+* Original:  0.56
+
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
 * Benchmarks are rough scores and haven't been built to be overly general at this point
