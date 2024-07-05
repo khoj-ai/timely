@@ -200,10 +200,21 @@ Fine Tuned nomic-embed-v5:  0.6733870967741935
 Fine Tuned nomic-embed-v2:  0.6169354838709677
 Original Nomic:  0.4934475806451613
 
-##### old benchmark
+##### old benchmark (unreliable):
 Fine Tuned nomic-embed-v8:  0.8197381671701913
 Fine Tuned nomic-embed-v7:  0.8036253776435045
 Fine Tuned nomic-embed-v5:  0.8600201409869084
+
+##### old benchmark long (unreliable):
+V8:  0.6453147877013177
+V7:  0.6855783308931186
+V6:  0.6524524158125915
+V5:  0.6465959004392386
+V4:  0.6932650073206442
+Original:  0.5021961932650073
+V2:  0.6278367496339677
+
+
 
 
 #### notes
