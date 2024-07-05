@@ -144,6 +144,6 @@ with open('csv/lastx_updated.csv', mode='w', newline='') as file:
             writer.writerow([f"{option}", date_range.split(",")[1]])
             i += 1
         else:
-            writer.writerow([f"{option} current date:{current_date}", date_range.split(",")[1]])
+            writer.writerow([f"{option} today:{current_date}", date_range.split(",")[1]])
             i += 1
 

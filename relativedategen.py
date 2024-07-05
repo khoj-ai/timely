@@ -149,7 +149,7 @@ with open('csv/relatives_dates_updated.csv', mode='w', newline='') as file:
             entry[1] = '-'.join(end_date_parts)
 
         # Append current date to entry[0]
-        entry[0] = f"{entry[0]} current date:{current_date.strftime('%m/%d/%y')}"
+        entry[0] = f"{entry[0]} today:{current_date.strftime('%m/%d/%y')}"
 
         # Write the modified entry to CSV
         writer.writerow(entry)
