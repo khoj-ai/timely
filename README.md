@@ -148,7 +148,6 @@ Fine Tuned nomic-embed-v5:  0.902
 Fine Tuned nomic-embed-v2:  0.788
 Original Nomic:  0.642
 
-
 #### v8
 1.6 million parameters, same strategy as v7, couple of cases included with date in query but matching to document wiht no date
 
@@ -179,6 +178,12 @@ Original Nomic:  0.642
 * V7:  0.808
 * V5:  0.72
 * Original:  0.56
+
+##### natural heavy
+V8:  0.991
+V7:  0.99
+V5:  0.943
+Original:  0.653
 
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
