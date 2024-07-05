@@ -244,6 +244,8 @@ Fine Tuned nomic-embed-v7:  0.961
 Fine Tuned nomic-embed-v5:  0.916
 Original Nomic:  0.695
 
+##### runtime speed
+4 minutes, 60MB of data (same as nomic standard)
 
 
 #### notes
