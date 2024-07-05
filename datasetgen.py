@@ -8,8 +8,7 @@ def get_dates(date_str):
     This function takes a date string in the format "MM/DD/YYYY"
     and returns a datetime object.
     """
-    dateRange = date_str
-    dateRange = dateRange.split("-")
+    dateRange = date_str.split("-")
     try:
         date1 = datetime.strptime(dateRange[0], '%m/%d/%y')
         date2 = datetime.strptime(dateRange[1], '%m/%d/%y')
@@ -30,6 +29,10 @@ with open('csv/bulk.csv') as file:
         if "/" not in row[0]:
             mega_bins[row[0]] = []
         count += 1
+
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
 def scorer(date):
     month, day, year = map(int, date.split('/'))
     if year < 100:  # Assuming two-digit years are 2000s
@@ -50,71 +53,77 @@ def is_similar(start_date1, end_date1, start_date2, end_date2):
 value_keys = list(value_computed_dict.keys())
 mega_keys = list(mega_bins.keys())
 print("bins: ", len(mega_keys))
-for i in range(100000):
+for i in range(400000):
     val = random.choice(value_keys)
-    val_split = value_computed_dict[val].split("-")
-    
-    if "Computed" in value_computed_dict[val]:
+    val_computed = value_computed_dict[val]
+
+    # Skip if "Computed" is in the value
+    if "Computed" in val_computed:
         continue
     
+    val_split = val_computed.split("-")
     start_date1, end_date1 = val_split[0], val_split[1]
-    
-    # If "xx" is present, modify start_date1 and end_date1
-    if "xx" in value_computed_dict[val]:
+
+    if "xx" in val_computed:
         j = 0
         for key in mega_keys:
-            j += 1
             if j > 3000:
                 break
-            dates = value_computed_dict[key].split("-")
+            j += 1
+            
+            key_computed = value_computed_dict[key]
+            dates = key_computed.split("-")
             start_date2, end_date2 = dates[0], dates[1]
             year_part = start_date2.split("/")[2].zfill(2)
+
             mod_start_date1 = start_date1.replace("xx", year_part)
             mod_end_date1 = end_date1.replace("xx", year_part)
-            
+
             if is_similar(mod_start_date1, mod_end_date1, start_date2, end_date2):
                 mega_bins[key].append(val)
                 break
     else:
         j = 0
         for key in mega_keys:
-            j += 1
             if j > 500:
                 break
-            dates = value_computed_dict[key].split("-")
-            start_date2, end_date2 = dates[0], dates[1]
+            j += 1
             
+            key_computed = value_computed_dict[key]
+            dates = key_computed.split("-")
+            start_date2, end_date2 = dates[0], dates[1]
+
             if is_similar(start_date1, end_date1, start_date2, end_date2):
                 mega_bins[key].append(val)
-                break
-    
-    if i % 100 == 0:
+
+    if i % 10000 == 0:
         print("mega bin processing:", i)
- 
-# print(mega_bins)
-#print mega bin of May 2019
-print(f"May 2019: {mega_bins["May 2019"]}")
+# # print(mega_bins)
+# #print mega bin of May 2019
+# print(f"May 2019: {mega_bins["May 2019"]}")
 
 ds = load_dataset("sentence-transformers/wikihow")
 # for val in ds['train']:
 #     print(val['text'])
 # print(ds['train'][0]['text'])
 
+@lru_cache(maxsize=None)
 def modify_query(i, text, start_or_end):
     summary = ds['train'][i]['summary']
     if start_or_end == 0:
-        summary = summary.rstrip(".?")
+        if summary.endswith('.') or summary.endswith('?'):
+            summary = summary[:-1]
         return summary + " " + text
     else:
         summary = summary[0].lower() + summary[1:]
         return text + " " + summary
 
+@lru_cache(maxsize=None)
 def modify_doc(i, text, start_or_end):
     doc = ds['train'][i]['text']
     if start_or_end == 0:
-        if random.randint(0, 1) == 0:
-            text = text.lower()
-        doc = doc.rstrip(".?")
+        if doc.endswith('.') or doc.endswith('?'):
+            doc = doc[:-1]
         return doc + " " + text
     else:
         if random.randint(0, 1) == 0:
@@ -127,20 +136,22 @@ month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'O
 doc_templates_end = [" Created {val}", " Published {val}", " Written {val}", " Released {val}", " Posted {val}"]
 doc_templates_start = ["Created {val} ", "Published {val} ", "Written {val} ", "Released {val} ", "Posted {val} "]
 
-dataset = open("csv/wikihow_data_aware_v5.csv", "w", newline="")
+dataset = open("datasets/wikihow_data_aware_v6.csv", "w", newline="")
 writer = csv.writer(dataset, delimiter="|")
 writer.writerow(["Query", "Document"])
 
 i = 0
-total_queries = 240000
+total_queries = 960000
 j=0
+rows = []
+random.seed(datetime.now().timestamp())
+keys_val = list(value_computed_dict.keys())
 while j < total_queries:
     if i > 70000:
         i = 0
     if j % 10000 == 0:
         print("processing: ", j)
-    random.seed(datetime.now().timestamp())
-    val = random.choice(list(value_computed_dict.keys()))
+    val = random.choice(keys_val)
     if "Computed" in value_computed_dict[val]:
         continue
     if ("xx" in value_computed_dict[val] or val.count("/") == 2) and random.randint(0,100) > 90:
@@ -180,11 +191,13 @@ while j < total_queries:
         try:
             #remove newline from doc_text
             doc_text = doc_text.replace("\n", "")
-            writer.writerow([query_text, doc_text])
+            #encode query and doc text into ascii
+            rows.append([query_text, doc_text])
             i += 1
             j += 1
+            # print(j)
         except:
-            print("error for ", val)
+            # print("error for ", val)
             i += 1
             continue
     elif any(month in val for month in month_short):
@@ -210,11 +223,11 @@ while j < total_queries:
         doc_text = modify_doc(i, start_date, start_or_end)
         try:
             doc_text = doc_text.replace("\n", "")
-            writer.writerow([query_text, doc_text])
+            rows.append([query_text, doc_text])
             i += 1
             j += 1
         except:
-            print("error for ", val)
+            # print("error for ", val)
             i += 1
             continue
     elif val in mega_keys:
@@ -235,18 +248,23 @@ while j < total_queries:
             doc_text = modify_doc(i, formatted_val, start_or_end)
             try:
                 doc_text = doc_text.replace("\n", "")
-                writer.writerow([query_text, doc_text])
+                row.append([query_text, doc_text])
                 i += 1
                 j += 1
             except:
-                print("error for ", val)
+                # print("error for ", val)
                 i += 1
                 continue
             val = random.choice(mega_keys)
+for row in rows:
+    try:
+        writer.writerow(row)
+    except:
+        continue
 # reinforce Winter, Summer, Spring, Fall, Monsoon by artificially adding more entries to the dataset
 i = 0
 j = 0
-num_reinforcements = 80000
+num_reinforcements = 320000
 reinforcements = ["Winter", "Summer", "Spring", "Fall", "Monsoon"]
 season_dict = {}
 for keys in mega_keys:
@@ -269,18 +287,21 @@ for keys in mega_keys:
             start_date1 = start_date1.replace("xx", year_part)
             end_date1 = end_date1.replace("xx", year_part)
             if is_similar(start_date1, end_date1, start_date2, end_date2):
-                print(start_date1, end_date1, start_date2, end_date2)
+                # print(start_date1, end_date1, start_date2, end_date2)
                 season_dict[keys].append(val)
                 j += 1
                 i += 1
         #print(f"Reinforced {keys} with {j} entries")
 i = 0
 j = 0
-num_reinforcements = 80000
+num_reinforcements = 320000
+season_list = list(season_dict.keys())
 while j < num_reinforcements:
+    if j % 10000 == 0:
+        print("processing: ", j)
     if i > 70000:
         i = 0
-    key = random.choice(list(season_dict.keys()))
+    key = random.choice(season_list)
     val = random.choice(season_dict[key])
     # print(key,val)
     if "xx" in value_computed_dict[val]:
@@ -292,6 +313,7 @@ while j < num_reinforcements:
     query_text = modify_query(i, key, start_or_end)
     selected_val = val
     start_or_end = random.randint(0, 1)
+    #random swap key and selected_val
     if start_or_end == 0:
         formatted_val = random.choice(doc_templates_start).format(val=selected_val)
     else:
@@ -303,16 +325,16 @@ while j < num_reinforcements:
         i += 1
         j += 1
     except:
-        print("error for ", val)
+        #print("error for ", val)
         i += 1
 
 #similar process with reinforcement for strings that have "current date:" in them
 i = 0
 j = 0
-num_reinforcements = 80000
+num_reinforcements = 320000
 reinforcements = ["current date:"]
 current_date_dict = {}  
-print(mega_bins)
+# print(mega_bins)
 for keys in value_computed_dict.keys():
     if i > 70000:
         i = 0
@@ -341,14 +363,16 @@ for keys in value_computed_dict.keys():
 
 i = 0
 j = 0
-num_reinforcements = 80000
-print("keys date dict: ", len(current_date_dict.keys()))
+num_reinforcements = 320000
+# print("keys date dict: ", len(current_date_dict.keys()))
 while j < num_reinforcements:
+    if j % 10000 == 0:
+        print("processing: ", j)
     if i > 70000:
         i = 0
     key = random.choice(list(current_date_dict.keys()))
     val = random.choice(current_date_dict[key])
-    print(key,val)
+    # print(key,val)
     if "xx" in value_computed_dict[val]:
         if random.randint(0, 1) == 0:
             val = val.replace("xx", str(random.randint(0, 49)).zfill(2))
@@ -369,11 +393,11 @@ while j < num_reinforcements:
         i += 1
         j += 1
     except:
-        print("error for ", val)
+        # print("error for ", val)
         i += 1
 
 #throw in standard query and doc pairs
-num_standard = 40000
+num_standard = 160000
 i = 0
 j = 0
 while j < num_standard:
@@ -387,6 +411,6 @@ while j < num_standard:
         i += 1
         j += 1
     except:
-        print("error for ", val)
+        # print("error for ", val)
         i += 1
     

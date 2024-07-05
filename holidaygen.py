@@ -1,89 +1,79 @@
-
-from datetime import date, datetime, timedelta 
-import holidays 
+from datetime import datetime, timedelta
+import holidays
 import csv
+import random
 
 def daterange(month, day, year):
     # Create a datetime object for the given date
     date = datetime(year, month, day)
     
     # Calculate the start and end dates of the 14-day interval
-    start_date = date - timedelta(days=10)  # 7 days before
-    end_date = date + timedelta(days=10)    # 7 days after
+    start_date = date - timedelta(days=10)  # 10 days before
+    end_date = date + timedelta(days=10)    # 10 days after
     
     # Format the dates into the required string format
     interval_str = f"{start_date.month}/{start_date.day}/{start_date.year}-{end_date.month}/{end_date.day}/{end_date.year}"
     
     return interval_str
 
-#holidays.csv 
-with open('holidays.csv', mode='w', newline='') as file:
+# Define possible date formats for specific holidays
+date_formats = {
+    "Christmas Day": [
+        "{year} Christmas",
+        "Christmas {year}",
+        "Christmas '{year_short}",
+        "'{year_short} Christmas"
+    ],
+    "Thanksgiving": [
+        "{year} Thanksgiving",
+        "Thanksgiving {year}",
+        "Thanksgiving '{year_short}",
+        "'{year_short} Thanksgiving"
+    ],
+    "New Year's Day": [
+        "{year} New Year's Day",
+        "New Year's Day {year}",
+        "New Year's Day '{year_short}",
+        "'{year_short} New Year's Day",
+        "{year} New Year's",
+        "New Year's {year}",
+        "New Year's '{year_short}",
+        "'{year_short} New Year's",
+        "{year} New Years",
+        "New Years {year}",
+        "New Years '{year_short}",
+        "'{year_short} New Years"
+    ]
+}
+
+# Generate a list of all holidays
+all_holidays = []
+for year in range(2000, 2040):
+    us_holidays = holidays.UnitedStates(years=year)
+    for date, description in us_holidays.items():
+        if "observed" not in description:
+            all_holidays.append((date, description))
+
+# Randomly sample holidays
+sample_size = 1000  # Adjust this number to your needs
+sampled_holidays = random.sample(all_holidays, min(sample_size, len(all_holidays)))
+
+# Write to CSV
+with open('csv/holidays_updated.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['Description', 'Raw Date'])
-  
-for year in range(2000, 2040):
-    for ptr in holidays.UnitedStates(years = year).items(): 
-        year = ptr[0].year
-        month = ptr[0].month
-        day = ptr[0].day
-        description = ptr[1]
-        # Christmas 2024, 2024 Christmas, Christmas '24, '24 Christmas -> 12/15/2024-12/31/2024
-        # make these 4 types of date formats 
-        if "observed" in description:
-            continue
-        if description == "Christmas Day":
-            date_range = daterange(month, day, year)
-            input_formats = [
-                f"Christmas {year}",
-                f"{year} Christmas",
-                f"Christmas '{year % 100:02}",
-                f"'{year % 100:02} Christmas"
-            ]
-            with open('holidays.csv', mode='a', newline='') as file:
-                writer = csv.writer(file)
-                for input_str in input_formats:
-                    writer.writerow([input_str, date_range])
-        # Thanksgiving 2024, 2024 Thanksgiving, Thanksgiving '24, '24 Thanksgiving -> 11/01/2024-11/30/2024
-        # make these 4 types of date formats 
-        elif description == "Thanksgiving":
-            date_range = daterange(month, day, year)
-            input_formats = [
-                f"Thanksgiving {year}",
-                f"{year} Thanksgiving",
-                f"Thanksgiving '{year % 100:02}",
-                f"'{year % 100:02} Thanksgiving"
-            ]
-            with open('holidays.csv', mode='a', newline='') as file:
-                writer = csv.writer(file)
-                for input_str in input_formats:
-                    writer.writerow([input_str, date_range])
-        #  New Year's Day 2024, 2024 New Year's Day, New Year's Day '24, '24 New Year's Day -> 01/01/2024-01/01/2024
-        # make these 4 types of date formats 
-        elif description == "New Year's Day":
-            date_range = daterange(month, day, year)
-            input_formats = [
-                f"New Year's Day {year}",
-                f"{year} New Year's Day",
-                f"New Year's Day '{year % 100:02}",
-                f"'{year % 100:02} New Year's Day",
-                f"New Year's {year}",
-                f"{year} New Year's",
-                f"New Year's '{year % 100:02}'",
-                f"'{year % 100:02} New Year's",
-                f"New Years {year}",
-                f"{year} New Years",
-                f"New Years '{year % 100:02}",
-                f"'{year % 100:02} New Years",
-            ]
-            with open('holidays.csv', mode='a', newline='') as file:
-                writer = csv.writer(file)
-                for input_str in input_formats:
-                    writer.writerow([input_str, date_range])
-        else:
-            date_range = daterange(month, day, year)
-            with open('holidays.csv', mode='a', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow([description, date_range])
-
-
+    
+    for holiday_date, description in sampled_holidays:
+        year = holiday_date.year
+        year_short = holiday_date.year % 100
+        month = holiday_date.month
+        day = holiday_date.day
+        date_range = daterange(month, day, year)
         
+        if description in date_formats:
+            chosen_format = random.choice(date_formats[description])
+            input_str = chosen_format.format(year=year, year_short=year_short)
+        else:
+            input_str = f"{year} {description}"
+        
+        writer.writerow([input_str, date_range])

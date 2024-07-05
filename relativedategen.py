@@ -108,9 +108,10 @@ def random_date_string(current_date):
     else:  # years
         random_value = random.randint(1, 50)  # up to 50 years
         start_date = current_date.replace(year=current_date.year - random_value, month=1, day=1)
-        end_date = start_date.replace(year=start_date.year, day=31, month=12)
-        end_date = min(end_date, date(current_date.year - 1, 12, 31))
-    end_date = get_last_day_of_month(start_date)
+        # end_date = start_date.replace(year=start_date.year, day=31, month=12)
+        end_date = current_date.replace(year=current_date.year - random_value, month=12, day=31)
+    if time_unit != 'days' and time_unit != 'years':    
+        end_date = get_last_day_of_month(start_date)
     # Format the dates
     start_date_str = start_date.strftime("%m/%d/%y")
     end_date_str = end_date.strftime("%m/%d/%y")
@@ -121,11 +122,11 @@ def random_date_string(current_date):
     return time_string
 
 # Main script to write CSV with modified dates
-with open('relatives_dates.csv', mode='w', newline='') as file:
+with open('csv/relatives_dates_updated.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['Value', 'Computed'])
 
-    for i in range(1000):
+    for i in range(10000):
         # Get current date
         current_date = random_dategen()
 

@@ -20,7 +20,7 @@ def generate_date_range_pairs():
     }
 
     # Iterate over each month and year directly
-    for year in range(2000, 2051):  # Years from 2000 to 2050
+    for year in range(2000, 2095):  # Years from 2000 to 2050
         for month_str, month_num in months.items():
             # Calculate the start and end dates of the month
             start_date = datetime(year, month_num, 1).strftime('%m/%d/%Y')

@@ -16,7 +16,7 @@ with open("benchmarks/BENCHMARK_PARAM.csv", "r") as file:
         dates.append(row[0])
 
 i = 80000
-with open("benchmarks/BENCHMARK.csv", "w") as file:
+with open("benchmarks/BENCHMARK.csv", "w", encoding="utf-8") as file:
     for line in dates:
         query_date, doc1_date, doc2_date, score = line.split("|")
         while True:

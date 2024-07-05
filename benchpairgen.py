@@ -38,60 +38,77 @@ with open('csv/bulk.csv') as file:
             continue
         value_computed_dict[row[0]] = row[1]
 
-gradient_count = 10000
+gradient_count = 1000
 i = 0
 values = list(value_computed_dict.keys())
-while i < gradient_count:
-    query = random.choice(values)
-    if (query.count("/") == 2):
-        continue
-    document = value_computed_dict[query].split("-")[0]
-    month, day, year = map(int, document.split('/'))
-    if random.random() < 0.2:
-        month = str(random.randint(1, 12)).zfill(2)
-    if random.random() < 0.1:
-        year = str(random.randint(2000, 2021))
-    if random.random() < 0.8:
-        day = str(random.randint(1, 28)).zfill(2)
-    startd = f"{month}/{day}/{year}"
-    #generate another startd using the same randomized logic
-    month, day, year = map(int, document.split('/'))
-    if random.random() < 0.2:
-        month = str(random.randint(1, 12)).zfill(2)
-    if random.random() < 0.1:
-        year = str(random.randint(2000, 2021))
-    if random.random() < 0.8:
-        day = str(random.randint(1, 28)).zfill(2)
-    init_startd = f"{month}/{day}/{year}"
+# while i < gradient_count:
+#     query = random.choice(values)
+#     if (query.count("/") == 2):
+#         continue
+#     document = value_computed_dict[query].split("-")[0]
+#     month, day, year = map(int, document.split('/'))
+#     # if random.random() < 0.2:
+#     #     month = str(random.randint(1, 12)).zfill(2)
+#     # if random.random() < 0.1:
+#     #     year = str(random.randint(2000, 2021))
+#     # if random.random() < 0.8:
+#     #     day = str(random.randint(1, 28)).zfill(2)
+#     startd = f"{month}/{day}/{year}"
+#     #generate another startd using the same randomized logic
+#     month, day, year = map(int, document.split('/'))
+#     if random.random() < 0.2:
+#         month = str(random.randint(1, 12)).zfill(2)
+#     if random.random() < 0.1:
+#         year = str(random.randint(2000, 2021))
+#     if random.random() < 0.8:
+#         day = str(random.randint(1, 28)).zfill(2)
+#     init_startd = f"{month}/{day}/{year}"
 
-    #score the doc date, startd, and init_startd. 1 if startd is closer to doc date than init_startd else 0
-    if abs(scorer(startd) - scorer(document)) < abs(scorer(init_startd) - scorer(document)):
-        score = 1
-    else:
-        score = 0
+#     #score the doc date, startd, and init_startd. 1 if startd is closer to doc date than init_startd else 0
+#     if abs(scorer(startd) - scorer(document)) < abs(scorer(init_startd) - scorer(document)):
+#         score = 1
+#     else:
+#         score = 0
 
-    vals = startd.split("/")
-    for j in range(len(vals)):
-        vals[j] = vals[j].zfill(2)
-    startd = "/".join(vals)
-    #SAME THING FOR init_startd
-    vals = init_startd.split("/")
-    for j in range(len(vals)):
-        vals[j] = vals[j].zfill(2)
-    init_startd = "/".join(vals)
-    query = query.replace("\n", "")
-    startd = startd.replace("\n", "")
-    writer.writerow([query, startd, init_startd, score])
-    i += 1
+#     vals = startd.split("/")
+#     for j in range(len(vals)):
+#         vals[j] = vals[j].zfill(2)
+#     startd = "/".join(vals)
+#     #SAME THING FOR init_startd
+#     vals = init_startd.split("/")
+#     for j in range(len(vals)):
+#         vals[j] = vals[j].zfill(2)
+#     init_startd = "/".join(vals)
+#     query = query.replace("\n", "")
+#     startd = startd.replace("\n", "")
+#     writer.writerow([query, startd, init_startd, score])
+#     i += 1
 
 #open lastx and add 1000 of these using the same strategy
 value_computed_dict = {}
-with open('csv/lastx.csv') as file:
+with open('csv/lastx_updated.csv') as file:
     reader = csv.reader(file)
     for row in reader:
         if "Computed" in row or "xx" in row[1]:
             continue
-        value_computed_dict[row[0]] = row[1]
+        if random.randint(0,10) > 7:
+            value_computed_dict[row[0]] = row[1]
+
+with open('csv/relatives_dates_updated.csv') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        if "Computed" in row or "xx" in row[1]:
+            continue
+        if random.randint(0,10) > 7:
+            value_computed_dict[row[0]] = row[1]
+
+with open('csv/dates_updated.csv') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        if "Computed" in row or "xx" in row[1]:
+            continue
+        if random.randint(0,10) > 7:
+            value_computed_dict[row[0]] = row[1]
 
 gradient_count = 1000
 i = 0
@@ -102,12 +119,12 @@ while i < gradient_count:
     #     continue
     document = value_computed_dict[query].split("-")[0]
     month, day, year = map(int, document.split('/'))
-    if random.random() < 0.7:
-        month = str(random.randint(1, 12)).zfill(2)
-    if random.random() < 0.1:
-        year = str(random.randint(2000, 2021))
-    if random.random() < 0.8:
-        day = str(random.randint(1, 28)).zfill(2)
+    # if random.random() < 0.7:
+    #     month = str(random.randint(1, 12)).zfill(2)
+    # if random.random() < 0.1:
+    #     year = str(random.randint(2000, 2021))
+    # if random.random() < 0.8:
+    #     day = str(random.randint(1, 28)).zfill(2)
     startd = f"{month}/{day}/{year}"
     #generate another startd using the same randomized logic
     month, day, year = map(int, document.split('/'))

@@ -3,12 +3,12 @@ import os
 from datetime import datetime, timedelta
 
 # Define the CSV file name
-csv_file = 'csv/dates_updated.csv'
+csv_file = 'csv/dates_to_dates.csv'
 
 import random
 from datetime import datetime, timedelta
 
-def generate_random_date_pairs(sample_size=25000):
+def generate_random_date_pairs(sample_size=300000):
     pairs = []
     start_year = 2000
     end_year = 2050
@@ -54,11 +54,15 @@ def generate_random_date_pairs(sample_size=25000):
             month=month, day=day, year=year, full_year=full_year, short_month=short_month
         )
         
-        # Add pairs without year
-        pairs.append((formatted_date_without_year, standard_date + "/xx-" + standard_date + "/xx"))
-        
-        # Add pairs with year
-        pairs.append((formatted_date_with_year, standard_date_with_year + "-" + standard_date_with_year))
+        if random.randint(0,1) == 1:
+            # Add pairs without year
+            pairs.append((formatted_date_without_year, standard_date))
+            
+            # Add pairs with year
+            pairs.append((formatted_date_with_year, standard_date_with_year))
+        else:
+            pairs.append((standard_date, formatted_date_without_year))
+            pairs.append((standard_date_with_year,formatted_date_with_year))
     
     return pairs
 
