@@ -223,6 +223,22 @@ Original:  0.5021961932650073
 V2:  0.6278367496339677
 
 #### v9
+
+##### bench diverse stable (1k) (31.6% better than base model)
+Fine Tuned nomic-embed-v9:  0.958041958041958
+Fine Tuned nomic-embed-v7:  0.951
+Fine Tuned nomic-embed-v5:  0.902
+Original Nomic:  0.642
+
+##### bench diverse stable (10k) (27.8% better than base model)
+Fine Tuned nomic-embed-v9:  0.9656
+Fine Tuned nomic-embed-v8:  0.9624
+Fine Tuned nomic-embed-v7:  0.9634
+Fine Tuned nomic-embed-v5:  0.9206
+Fine Tuned nomic-embed-v2:  0.8254
+Original Nomic:  0.6875
+
+##### bench diverse standard
 Fine Tuned nomic-embed-v9:  0.957
 Fine Tuned nomic-embed-v7:  0.961
 Fine Tuned nomic-embed-v5:  0.916
