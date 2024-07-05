@@ -151,6 +151,14 @@ Original Nomic:  0.642
 #### v8
 1.6 million parameters, same strategy as v7, couple of cases included with date in query but matching to document wiht no date
 
+##### diverse stable (10k)
+Fine Tuned nomic-embed-v8:  0.9624
+Fine Tuned nomic-embed-v7:  0.9634
+Fine Tuned nomic-embed-v5:  0.9206
+Fine Tuned nomic-embed-v2:  0.8254
+Original Nomic:  0.6875
+
+
 
 ##### diverse base (10k)
 * V8:  0.6476363636363637
