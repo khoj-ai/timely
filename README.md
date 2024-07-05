@@ -222,6 +222,11 @@ V4:  0.6932650073206442
 Original:  0.5021961932650073
 V2:  0.6278367496339677
 
+#### v9
+Fine Tuned nomic-embed-v9:  0.957
+Fine Tuned nomic-embed-v7:  0.961
+Fine Tuned nomic-embed-v5:  0.916
+Original Nomic:  0.695
 
 
 
