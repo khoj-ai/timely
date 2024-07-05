@@ -179,11 +179,32 @@ Original Nomic:  0.642
 * V5:  0.72
 * Original:  0.56
 
+#### diverse close dates standard
+
 ##### natural heavy
 V8:  0.991
 V7:  0.99
 V5:  0.943
 Original:  0.653
+
+##### diverse hard:
+
+V7:  0.748991935483871
+V5:  0.7585685483870968
+Original:  0.5544354838709677
+
+##### diverse natural language period (season/month/etc in query):
+Fine Tuned nomic-embed-v8:  0.6738911290322581
+Fine Tuned nomic-embed-v7:  0.6759072580645161
+Fine Tuned nomic-embed-v5:  0.6733870967741935
+Fine Tuned nomic-embed-v2:  0.6169354838709677
+Original Nomic:  0.4934475806451613
+
+##### old benchmark
+Fine Tuned nomic-embed-v8:  0.8197381671701913
+Fine Tuned nomic-embed-v7:  0.8036253776435045
+Fine Tuned nomic-embed-v5:  0.8600201409869084
+
 
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
