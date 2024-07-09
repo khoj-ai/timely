@@ -247,12 +247,12 @@ Original Nomic:  0.695
 ##### runtime speed
 4 minutes, 60MB of data (same as nomic standard)
 
-#### arctic v9
-switched to arctic v9 due to overall higher RAG score with small performance hit and smaller overall size.
+#### arctic v9 (small, medium, large)
+switched to arctic v9 due to overall higher RAG score with small performance hit and smaller overall size. Arctic also has three model sizes which means we can easily create three different sizes based on the user's hardware. This is very important in ensuring we create a model that can be used across Khoj.
 
 ##### diverse stable
-Fine Tuned nomic-embed-v9:  0.9656
-Fine Tuned arctic-embed-m-v9:  0.9252
+- Fine Tuned nomic-embed-v9:  0.9656
+- Fine Tuned arctic-embed-m-v9:  0.9252
 
 
 
