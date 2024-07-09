@@ -253,6 +253,7 @@ switched to arctic v9 due to overall higher RAG score with small performance hit
 ##### diverse stable
 - Fine Tuned nomic-embed-v9:  0.9656
 - Fine Tuned arctic-embed-m-v9:  0.9252
+- Fine Tuned arctic-embed-l-v9:  0.9405
 
 
 
