@@ -247,6 +247,14 @@ Original Nomic:  0.695
 ##### runtime speed
 4 minutes, 60MB of data (same as nomic standard)
 
+#### arctic v9
+switched to arctic v9 due to overall higher RAG score with small performance hit and smaller overall size.
+
+##### diverse stable
+Fine Tuned nomic-embed-v9:  0.9656
+Fine Tuned arctic-embed-m-v9:  0.9252
+
+
 
 #### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
