@@ -4,6 +4,9 @@ At Khoj, we develop open-source personalized AI solutions that enable users to e
 
 To address this problem, we propose **Timely**, a comprehensive pipeline for date-aware dataset generation, model fine-tuning, and benchmarking.
 
+# Pretrained Models, Benchmarks, Datasets
+To download our fine-tuned Timely models visit our huggingface page here: [huggingface]
+
 # Technical Details
 For details related to dataset generation, model training and benchmarking as well as general findings and techniques refer to our technical report: [technical report].
 
