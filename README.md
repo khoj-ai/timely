@@ -267,6 +267,16 @@ switched to arctic v9 due to overall higher RAG score with small performance hit
 - Fine Tuned arctic-embed-s-v9:  0.8939
 - arctic-embed-s:  0.5862
 
+#### diverse long 2 (10k samples)
+Fine Tuned nomic-embed-v9:  0.9445889177835567
+nomic-embed-v1:  0.7023404680936187
+Fine Tuned arctic-embed-l-v9:  0.9412882576515303
+arctic-embed-l:  0.7421484296859372
+Fine Tuned arctic-embed-m-v9:  0.9315863172634526
+arctic-embed-m:  0.7344468893778756
+Fine Tuned arctic-embed-s-v9:  0.9066813362672534
+arctic-embed-s:  0.6119223844768954
+
 #### diverse short (1k samples)
 - Fine Tuned nomic-embed-v9:  0.958041958041958
 - nomic-embed-v1:  0.6653346653346653
