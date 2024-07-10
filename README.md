@@ -255,14 +255,34 @@ switched to arctic v9 due to overall higher RAG score with small performance hit
 - Fine Tuned arctic-embed-m-v9:  0.9252
 - Fine Tuned arctic-embed-l-v9:  0.9405
 
+### Final Results
 
+#### diverse long (10k samples)
+Fine Tuned nomic-embed-v9:  0.9656
+nomic-embed-v1:  0.7016
+Fine Tuned arctic-embed-l-v9:  0.9405
+arctic-embed-l:  0.7302
+Fine Tuned arctic-embed-m-v9:  0.9252
+arctic-embed-m:  0.7598
+Fine Tuned arctic-embed-s-v9:  0.8939
+arctic-embed-s:  0.5862
 
-#### notes
+#### diverse short (1k samples)
+Fine Tuned nomic-embed-v9:  0.958041958041958
+nomic-embed-v1:  0.6653346653346653
+Fine Tuned arctic-embed-l-v9:  0.9200799200799201
+arctic-embed-l:  0.7102897102897103
+Fine Tuned arctic-embed-m-v9:  0.8911088911088911
+arctic-embed-m:  0.7162837162837162
+Fine Tuned arctic-embed-s-v9:  0.8551448551448552
+arctic-embed-s:  0.5534465534465535
+
+### notes
 * Percent improvements are based on the original percent of the base model. For example if the base model has a score of 0.5 and the tuned model has a score of 0.75 this is labeled as a 25% improvement rather than a 50% improvement.
 * Benchmarks are rough scores and haven't been built to be overly general at this point
 * Small steps between model versions may have been omitted but general training arguments will be included below.
 
-#### in the works
+### in the works
 - upgrade to title - wikipedia article dataset
 - more formats of date
 - times
