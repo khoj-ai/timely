@@ -297,6 +297,9 @@ switched to arctic v9 due to overall higher RAG score with small performance hit
 - more formats of date
 - times
 
+#### Graph
+
+![timelychart](https://github.com/khoj-ai/timely/assets/62105787/f3e0d6e7-3150-4978-afc3-211ac11ee732)
 
 
 ### Contact
