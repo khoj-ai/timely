@@ -95,6 +95,24 @@ def get_date_range(current_date, option):
         last_year = year - 1
         start_date = datetime(last_year, 9, 1).date()
         end_date = datetime(last_year, 11, 30).date()
+    #check if option is a day of the week
+    elif option in ["last monday", "last tuesday", "last wednesday", "last thursday", "last friday", "last saturday", "last sunday"]:
+        # Convert the day name to a number (0 = Monday, 6 = Sunday)
+        day_to_num = {"monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3, 
+                    "friday": 4, "saturday": 5, "sunday": 6}
+        target_day = option.split(" ")[-1]
+        target_day_num = day_to_num[target_day]
+        
+        # Calculate the number of days to go back
+        days_back = (current_date_obj.weekday() - target_day_num) % 7
+        if days_back == 0:
+            days_back = 7  # If it's the same day, we want last week's occurrence
+        
+        # Calculate the date of the last occurrence of the target day
+        result_date = current_date_obj - timedelta(days=days_back)
+        
+        # Return formatted string
+        return f"{option} current date:{current_date_obj.strftime('%m/%d/%Y')},{result_date.strftime('%m/%d/%Y')}-{result_date.strftime('%m/%d/%Y')}"
     else:
         # Option not recognized
         raise ValueError("Invalid option")
@@ -113,23 +131,29 @@ import csv
 with open('csv/lastx_updated.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['Value', 'Computed'])
-    options = ["last month", 
-               "last year", 
-               "middle of last year",
-               "beginning of last year", 
-               "end of last year", 
-               "start of last year", 
-               "early last year", 
-               "last week", 
-               "this week", 
-               "this month",
-               "last winter",
-               "last summer",
-               "last spring",
-               "last fall",
-               ]
+    options = [ "last month", 
+                "last year", 
+                "middle of last year",
+                "beginning of last year", 
+                "end of last year", 
+                "start of last year", 
+                "early last year", 
+                "last week", 
+                "this week", 
+                "this month",
+                "last winter",
+                "last summer",
+                "last spring",
+                "last fall",
+                "last monday",
+                "last tuesday",
+                "last wednesday",
+                "last thursday",
+                "last friday",
+                "last saturday",
+                "last sunday", ]
     i = 0
-    while i < 12000:
+    while i < 10000:
         year = random.randint(2001, 2099)
         month = random.randint(1, 12)
         day = random.randint(1, 28)
@@ -139,6 +163,10 @@ with open('csv/lastx_updated.csv', mode='w', newline='') as file:
         if date_range == "":
             continue
         gen = random.randint(0, 3)
+        #skip last thursday.... type queries every once in a while (any day of the week)
+        if option in ["last monday", "last tuesday", "last wednesday", "last thursday", "last friday", "last saturday", "last sunday"]:
+            if gen < 2:
+                continue
         if "last year" in option and option != "last year" and gen == 1:
             option = option.replace("last year", str(year - 1))
             writer.writerow([f"{option}", date_range.split(",")[1]])

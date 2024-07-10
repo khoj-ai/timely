@@ -8,10 +8,10 @@ csv_file = 'csv/dates_to_dates.csv'
 import random
 from datetime import datetime, timedelta
 
-def generate_random_date_pairs(sample_size=300000):
+def generate_random_date_pairs(sample_size=450000):
     pairs = []
-    start_year = 2000
-    end_year = 2050
+    start_year = 1900
+    end_year = 2100
     total_days = (datetime(end_year + 1, 1, 1) - datetime(start_year, 1, 1)).days
     
     formats_without_year = [
@@ -27,7 +27,8 @@ def generate_random_date_pairs(sample_size=300000):
         # '{month}/{day}/{year:02d}',
         # '{month:02d}/{day}/{year:02d}',
         '{month:02d}/{day:02d}/{year:02d}',
-        '{month:02d}/{day:02d}/{year:02d}',
+        #lets also add - support and YYYY-MM
+        '{year:02d}/{month:02d}/{day:02d}',
         '{short_month} {day} {full_year}',   # Jan 1 2000
         '{full_year} {short_month} {day}',   # 2000 Jan 1
     ]

@@ -92,39 +92,52 @@ load_data(lastx_file, lastx_dict)
 load_data(relatives_dates_file, relativedate_dict)
 load_data(months_file, monthsdict)
 
+# Date formats to use
+date_formats = ['%m/%d/%Y', '%d/%m/%Y', '%Y/%m/%d', '%Y-%m-%d', '%m-%d-%Y']
+
 #writing to file titled csv/natural_to_date.csv
 file = open('csv/natural_to_date.csv', 'w', newline='')
 writer = csv.writer(file, delimiter='|')
 writer.writerow(['Value', 'Computed'])
 
 rows = []
-for season_key, season_date in season_dict.items():
-    season_start, season_end = get_dates(season_date)
-    #generate a date between the two datetime objects
-    random_date = season_start + (season_end - season_start) * random.random()
-    rows.append([season_key, random_date.strftime('%m/%d/%Y')])
+for i in range(5):
+    for season_key, season_date in season_dict.items():
+        season_start, season_end = get_dates(season_date)
+        #generate a date between the two datetime objects
+        random_date = season_start + (season_end - season_start) * random.random()
+        date_format = random.choice(date_formats)
+        rows.append([season_key, random_date.strftime(date_format)])
 
 for date_key, date_str in dates_dict.items():
     start_date, end_date = get_dates(date_str)
     random_date = start_date + (end_date - start_date) * random.random()
-    rows.append([date_key, random_date.strftime('%m/%d/%Y')])
+    date_format = random.choice(date_formats)
+    rows.append([date_key, random_date.strftime(date_format)])
 
+#for i in range(3):
+#print lastx size
+print(len(lastx_dict), "lastx size")
 for lastx_key, lastx_date in lastx_dict.items():
     lastx_start, lastx_end = get_dates(lastx_date)
     random_date = lastx_start + (lastx_end - lastx_start) * random.random()
-    rows.append([lastx_key, random_date.strftime('%m/%d/%Y')])
+    date_format = random.choice(date_formats)
+    rows.append([lastx_key, random_date.strftime(date_format)])
 
+print(len(relativedate_dict), "relativedate size")
 for relative_key, relative_date in relativedate_dict.items():
     relative_start, relative_end = get_dates(relative_date)
     random_date = relative_start + (relative_end - relative_start) * random.random()
-    rows.append([relative_key, random_date.strftime('%m/%d/%Y')])
+    date_format = random.choice(date_formats)
+    rows.append([relative_key, random_date.strftime(date_format)])
 
+#for i in range(3):
 for month_key, month_date in monthsdict.items():
     month_start, month_end = get_dates(month_date)
     random_date = month_start + (month_end - month_start) * random.random()
-    rows.append([month_key, random_date.strftime('%m/%d/%Y')])
+    date_format = random.choice(date_formats)
+    rows.append([month_key, random_date.strftime(date_format)])
 
 random.shuffle(rows)
 writer.writerows(rows)
-print(f"appended {len(rows)} rows to natural_to_date.csv")
-
+print(f"wrote {len(rows)} rows to natural_to_date.csv")
