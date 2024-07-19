@@ -1,7 +1,6 @@
 ![image](https://github.com/khoj-ai/timely/assets/62105787/d860dc91-8706-4d80-9aca-7a50b3348f9e)
-Jump to [Usage](https://github.com/khoj-ai/timely/tree/main?tab=readme-ov-file#usage)
 # Technical Report
-
+Jump to the section on [usage](https://github.com/khoj-ai/timely/tree/main?tab=readme-ov-file#usage)
 ## **Introduction**
 
 At Khoj, we develop open-source personal AI to simplify how people engage with machines. The RAG component in modern AI systems commonly uses an embedding model to retrieve relevant documents for a user query. This retrieved-context enables accurate and personalized responses. 
