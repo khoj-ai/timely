@@ -153,7 +153,7 @@ with open('csv/lastx_updated.csv', mode='w', newline='') as file:
                 "last saturday",
                 "last sunday", ]
     i = 0
-    while i < 10000:
+    while i < 5000:
         year = random.randint(2001, 2099)
         month = random.randint(1, 12)
         day = random.randint(1, 28)

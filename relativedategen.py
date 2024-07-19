@@ -126,7 +126,7 @@ with open('csv/relatives_dates_updated.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['Value', 'Computed'])
 
-    for i in range(10000):
+    for i in range(5000):
         # Get current date
         current_date = random_dategen()
 

@@ -2,7 +2,7 @@ from datasets import load_dataset
 import random
 import csv
 
-ds = load_dataset("sentence-transformers/wikihow")
+ds = load_dataset("sentence-transformers/gooaq")
 
 doc_templates_end = [" Created {val}", " Published {val}", " Written {val}", " Released {val}", " Posted {val}"]
 doc_templates_start = ["Created {val} ", "Published {val} ", "Written {val} ", "Released {val} ", "Posted {val} "]
@@ -20,12 +20,10 @@ natural_to_dates = load_csv_data('csv/natural_to_date.csv', '|')
 dates_to_dates = load_csv_data('csv/dates_to_dates.csv', ',')
 natural_to_natural = load_csv_data('csv/natural_language_tuples.csv', '|')
 
-ds = load_dataset("sentence-transformers/wikihow")
-
 from functools import lru_cache
 @lru_cache(maxsize=None)
 def modify_query(i, text, start_or_end):
-    summary = ds['train'][i]['summary'].encode('utf-8').decode('utf-8')
+    summary = ds['train'][i]['question'].encode('utf-8').decode('utf-8')
     if start_or_end == 0:
         return f"{summary} {text}"
     else:
@@ -33,7 +31,7 @@ def modify_query(i, text, start_or_end):
 
 @lru_cache(maxsize=None)
 def modify_doc(i, text, start_or_end):
-    doc = ds['train'][i]['text'].encode('utf-8').decode('utf-8').replace('\n', "")
+    doc = ds['train'][i]['answer'].encode('utf-8').decode('utf-8').replace('\n', "")
     if start_or_end == 0:
         return f"{doc} {text}"
     else:
@@ -72,7 +70,7 @@ with open("benchmarks/BENCHMARK_U.csv", "w", encoding="utf-8", newline="") as fi
     with open("benchmarks/BENCHMARK_U_original.csv", "w", encoding="utf-8", newline="") as file1:
         writer = csv.writer(file, delimiter='|')
         writer1 = csv.writer(file1, delimiter='|')
-        i = 80000
+        i = 2500000
         sample_size = 10000
         j = 0
         while j < sample_size:

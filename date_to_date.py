@@ -8,7 +8,7 @@ csv_file = 'csv/dates_to_dates.csv'
 import random
 from datetime import datetime, timedelta
 
-def generate_random_date_pairs(sample_size=450000):
+def generate_random_date_pairs(sample_size=10000):
     pairs = []
     start_year = 1900
     end_year = 2100

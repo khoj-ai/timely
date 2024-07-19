@@ -3,8 +3,8 @@ from tqdm import tqdm
 import re 
 
 # DESCRIPTION: converts existing dataset scheme into today: dates with YYYY-MM-DD format
-dataset_to_convert = "benchmarks/bench_diverse_stable2_un.txt"
-output_file = "benchmarks/bench_diverse_stable2.txt"
+dataset_to_convert = "datasets/gooaq_v2.csv"
+output_file = "datasets/gooaq_v3.txt"
 
 def convert_date_format(date_str):
     # Convert MM/DD/YY to YYYY-MM-DD assuming dates are in the 2000s
@@ -40,7 +40,7 @@ with open(dataset_to_convert,'rb') as f:
     contents = f.read()
     #print the type of contents
     print(type(contents))
-contents = contents.decode("utf-8")
+contents = contents.decode("utf8")
 lines = contents.split("\n")
 
 # Write to output file
@@ -61,4 +61,5 @@ with open(output_file, 'w', encoding="utf8", newline='') as file:
             else:
                 file.write(query+"|"+doc)
         except:
-            print("Error in line: ", line)
+            continue
+            # print("Error in line: ", line)
