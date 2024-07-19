@@ -1,4 +1,6 @@
 ![image](https://github.com/khoj-ai/timely/assets/62105787/d860dc91-8706-4d80-9aca-7a50b3348f9e)
+# HuggingFace
+Pretrained models in various sizes are available [here](https://huggingface.co/khoj-ai).
 # Technical Report
 Jump to the section on [usage](https://github.com/khoj-ai/timely/tree/main?tab=readme-ov-file#usage)
 ## **Introduction**
