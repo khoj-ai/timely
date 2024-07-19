@@ -1,7 +1,6 @@
 ![image](https://github.com/khoj-ai/timely/assets/62105787/d860dc91-8706-4d80-9aca-7a50b3348f9e)
 # Technical Report
 
-# Timely: An Embeddings Model For Temporal Reasoning
 ## **Introduction**
 
 At Khoj, we develop open-source personal AI to simplify how people engage with machines. The RAG component in modern AI systems commonly uses an embedding model to retrieve relevant documents for a user query. This retrieved-context enables accurate and personalized responses. 
@@ -18,7 +17,7 @@ To address this problem, we propose **Timely**, a comprehensive pipeline for dat
 
 Embedding models work by converting queries and documents into high-dimensional vectors. The similarity between these vectors is then calculated to determine how conceptually related they are. Vectors that are closer together in this high-dimensional space are considered more related, while those further apart are less related or unrelated.
 
-![image](Pasted image 20240710101649.png)
+![image]("Pasted image 20240710101649.png")
 
 The similarity between vectors can be calculated using the cosine similarity formula:
 
@@ -28,11 +27,11 @@ $similarity = \frac{\vec{A} \cdot \vec{B}}{|\vec{A}| \cdot |\vec{B}|}$
 
 To improve temporal reasoning, we fine-tuned a base embedding model to bring vectors of similar temporal descriptions closer together. This process required generating diverse, high-quality data matching descriptions of dates in various formats.
 
-![image](Pasted image 20240710105453.png)
+![image]("Pasted image 20240710105453.png")
 
 We started with the [wikihow dataset](https://huggingface.co/datasets/sentence-transformers/wikihow/viewer/pair/train) and augmented query-document pairs with temporal descriptors. For example, a query might be appended with "today:2024-04-01 last spring" and the corresponding document with "spring 2023" or "03/15/2023". We generated various date formats programmatically and included plain WikiHow query-document pairs to prevent overfitting.
 
-![image](Pasted image 20240710105515.png)
+![image]("Pasted image 20240710105515.png")
 ## **Training**
 
 We initially used a T4 GPU for training runs and later upgraded to an NVIDIA A100 as our dataset grew beyond 100,000 entries. We primarily used the **nomic-embed-v1** embeddings model but switched to **arctic-embed** models for our final release to offer small, medium, and large model variants.
@@ -65,13 +64,13 @@ We went through multiple iterations, each improving various aspects of the model
 - **v0.6 - v0.8**: Scaled up to millions of data points, addressed MTEB degradation, and improved performance on diverse benchmarks.
 - **v0.9 (version 1)**: Final release with 1.3-2.1M data points, increased diversity, and improved support for relative date formats.
 
-![image](Screenshot 2024-07-10 at 1.29.22 PM.png|600x600)
+![image]("Screenshot 2024-07-10 at 1.29.22 PM.png")
 
 ## **Benchmarking**
 
 We created benchmarks using a strategy similar to our dataset generation, with new query-document pairs and various date formats based on unused sentences from the Wikihow dataset and Google answer-question (gooaq) dataset. Our diverse long benchmark (10k samples) evenly distributes different forms of natural language temporal information.
 
-![image](timelyprogression 1.png)
+![image]("timelyprogression 1.png")
 
 This graph shows that even a small amount of fine-tuning significantly improves performance, with dataset diversity correlating with benchmark performance improvements.
 
@@ -79,7 +78,7 @@ The final benchmark results for our three tiers of Timely models (small, medium,
 
 With this in mind, there are some unresolved issues currently. In terms of MTEB scoring, our models currently have a substantial loss in general retrieval abilities compared to the reported scores from the Arctic and Nomic base models. While there are several explanations for this degradation including dataset quality issues, model training differences, and overall concerns about the accuracy of MTEB, a conclusive analysis is required.
 
-![image](timelychart 3.png)
+![image]("timelychart 3.png")
 
 ## **Findings and Conclusion**
 
