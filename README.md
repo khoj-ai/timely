@@ -3,6 +3,8 @@
 Pretrained models in various sizes are available [here](https://huggingface.co/khoj-ai).
 # Technical Report
 Jump to the section on [usage](https://github.com/khoj-ai/timely/tree/main?tab=readme-ov-file#usage)
+
+Timely: An Embedding Model For Temporal Reasoning
 ## **Introduction**
 
 At Khoj, we develop open-source personal AI to simplify how people engage with machines. The RAG component in modern AI systems commonly uses an embedding model to retrieve relevant documents for a user query. This retrieved-context enables accurate and personalized responses. 
@@ -33,10 +35,11 @@ To improve temporal reasoning, we fine-tuned a base embedding model to bring vec
 
 We started with the [wikihow dataset](https://huggingface.co/datasets/sentence-transformers/wikihow/viewer/pair/train) and augmented query-document pairs with temporal descriptors. For example, a query might be appended with "today:2024-04-01 last spring" and the corresponding document with "spring 2023" or "03/15/2023". We generated various date formats programmatically and included plain WikiHow query-document pairs to prevent overfitting.
 
-![image](20240710105515.png)
+![image](20240710105515.png) 
+# Experiment 1: Improving Date Awareness
 ## **Training**
 
-We initially used a T4 GPU for training runs and later upgraded to an NVIDIA A100 as our dataset grew beyond 100,000 entries. We primarily used the **nomic-embed-v1** embeddings model but switched to **arctic-embed** models for our final release to offer small, medium, and large model variants.
+We initially used a T4 GPU for training runs and later upgraded to an NVIDIA A100 as our dataset grew beyond 100,000 entries. We primarily used the **nomic-embed-v1** embedding model but switched to **arctic-embed** models for our final release to offer small, medium, and large model variants.
 
 Training parameters remained largely consistent across iterations, aligning with the [Nomic technical report](https://static.nomic.ai/reports/2024_Nomic_Embed_Text_Technical_Report.pdf):
 
@@ -66,13 +69,13 @@ We went through multiple iterations, each improving various aspects of the model
 - **v0.6 - v0.8**: Scaled up to millions of data points, addressed MTEB degradation, and improved performance on diverse benchmarks.
 - **v0.9 (version 1)**: Final release with 1.3-2.1M data points, increased diversity, and improved support for relative date formats.
 
-![image](PM.png)
+![image](PM.png) 
 
 ## **Benchmarking**
 
-We created benchmarks using a strategy similar to our dataset generation, with new query-document pairs and various date formats based on unused sentences from the Wikihow dataset and Google answer-question (gooaq) dataset. Our diverse long benchmark (10k samples) evenly distributes different forms of natural language temporal information.
+We created benchmarks using a strategy similar to our dataset generation, with new query-document pairs and various date formats based on unused sentences from the Wikihow dataset and Google answer-question (gooaq) dataset. 
 
-![image](timelyprogression1.png)
+![image](timelyprogression1.png) 
 
 This graph shows that even a small amount of fine-tuning significantly improves performance, with dataset diversity correlating with benchmark performance improvements.
 
@@ -89,15 +92,73 @@ Key insights from our process include:
 - Scaling dataset size without increasing diversity can lead to overfitting and performance degradation
 - Consulting technical reports for base embedding models can reveal optimal training parameters
 
+# Experiment 2: Improving General Reasoning Ability
+
+As mentioned before our final timely models from experiment 1 suffered from large MTEB loss. While it's hard to run the entire MTEB benchmark due to resource and time constraints we identified two retrieval benchmarks that could be used to measure degradation. These were **QuoraRetrieval** which is a sentence-to-sentence benchmark and **DBPedia** which is a sentence-to-paragraph based on structured Wikipedia data. On these two metrics, our initial timely models took hits of around 5% and 11% respectively suggesting that our models wouldn't scale well to general reasoning tasks. For this reason, we decided to do another round of modifications to try and improve these benchmark scores while retaining as much performance on the timely benchmarks as possible. Below are some factors that we experimented with.
+
+## Factors that helped
+
+### **Dataset Diversity**
+Even with a small dataset of just 5000 pairs we were measuring large drops in MTEB performance suggesting that the quality of our data was inadequate. To address this we started looking for other base datasets to use in our date awareness augmentation process. Rather than just using WikiHow data, the dataset now included Wikipedia, Google Answer Question, and HotpotQA datasets all augmented using the data above. Filtering was also used to remove passages with existing date information and passages with excessive length as initial experiments revealed that these data points reduced performance. This improved DBPedia by about 4%.
+### **Hard Negatives**
+Looking at the literature from Snowflake's Arctic model, we found that mining hard negatives leads to better learning outcomes for the model. For each pair of query documents, 3 variants of the same query documents were included with different temporal formats so that the model focused on the date information. 
+
+### **Curriculum Learning**
+One other technique in the literature is curriculum learning which is essentially where the examples start out easy and become progressively difficult. For our purposes this was accomplished by putting small examples with direct date formats first and larger examples with relative date formats towards the end. 
+
+### **Freezing Layers**
+While this technique doesn't seem to be talked about too frequently in the embedding model literature, freezing early layers can be used to prevent catastrophic loss in the model by allowing the finetune process to only adjust layers near the end. We found that this technique led to improvements in MTEB metrics.
+
+### **Hyperparameter Tuning**
+Going back to the basics of Machine Learning, we conducted Hyperparameter tuning experiments on each model to identify the best training parameters that balance out Timely and MTEB benchmarks. Each arctic embed model has its own architecture so this proved vital to ensure optimal training behavior at each level. Specifically, we adjusted batch size, number of frozen layers, and learning rate.
+
+## Factors that weren't so helpful
+
+### **Matryoshka Loss**
+While the literature suggests that Matryoshka Loss can help ensure generalization while finetuning embedding model and can also allow for smaller embedding vectors, from our experiments we found that it led to degradation in MTEB and Timely performance
+
+### **Triplets**
+While many models like Arctic Embed and Nomic Embed employ triplets instead of query-document pairs during training, we found that it posed no additional improvements in performance on Timely and MTEB.
+
+## Increased Dataset Size
+While the common advice is to improve dataset diversity while scaling the dataset size, we found that larger Timely datasets led to further MTEB degradation. The cause for this is still not fully identified but the theory is that our dataset diversity is still lacking as much of the Arctic Embed finetuning dataset consists of proprietary web data
+## Model Training Details
+
+timely large
+- batch size: 32
+- number of frozen layers: 3 of 23
+- learning rate: 1e-6
+- dataset size: ~50,000
+timely medium
+* batch size: 128
+* number of frozen layers: 8 of 11
+* learning rate: 1.5e-5
+* dataset size: ~50,000
+timely small
+- batch size: 128
+- number of frozen layers: 8 of 11
+- learning rate: 1.5e-5
+- dataset size: ~50,000
+
+## Results
+
+|                             | QuoraRetrieval | DBPedia | Timely Wikipedia | Timely Google | Timely Wikihow |
+| --------------------------- | -------------- | ------- | ---------------- | ------------- | -------------- |
+| Timely Small (Experiment 1) | 0.82189        | 0.29394 | 0.9164           | 0.9039        | 0.8906         |
+| Timely Small                | 0.86062        | 0.36572 | 0.8651           | 0.8650        | 0.8578         |
+| Timely Medium               | 0.86439        | 0.40889 | 0.9031           | 0.8891        | 0.8894         |
+| Timely Large                | 0.87331        | 0.40851 | 0.9046           | 0.9026        | 0.8928         |
+| Arctic Small                | 0.8747         | 0.4159  | 0.6529           | 0.612         | 0.586          |
+| Arctic Medium               | 0.8742         | 0.4473  | 0.822            | 0.734         | 0.760          |
+| Arctic Large                | 0.8741         | 0.4597  | 0.7509           | 0.742         | 0.730          |
+From these results, we see that our original timely model, while formidable in the Timely benchmarks has a large amount of general reasoning degradation as seen in the QuoraRetrieval and DBPedia scores. Our new models achieve improvements to Timely performance while reducing the degradation in MTEB scores.
+
 ## **Future Work**
 
 Our future focus includes:
-- Incorporate smaller natural time formats (e.g. 8 pm, morning, sunrise, sunset)
-- Improve dataset quality using synthetic LLM-generated query-document pairings
-- Collect and incorporate user feedback from model version 1 to address issues
-- Conducting rigorous analysis of overall retrieval degradation to ensure the model can still be used in versatile applications.
-
-
+- Incorporate smaller natural time formats (e.g. 8 pm, morning, sunrise, sunset).
+- Improve dataset quality using synthetic LLM-generated query-document pairings.
+- Further Improvements to general reasoning ability.
 
 # Usage
 
