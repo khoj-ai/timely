@@ -124,17 +124,17 @@ While many models like Arctic Embed and Nomic Embed employ triplets instead of q
 While the common advice is to improve dataset diversity while scaling the dataset size, we found that larger Timely datasets led to further MTEB degradation. The cause for this is still not fully identified but the theory is that our dataset diversity is still lacking as much of the Arctic Embed finetuning dataset consists of proprietary web data
 ## Model Training Details
 
-timely large
+### timely large
 - batch size: 32
 - number of frozen layers: 3 of 23
 - learning rate: 1e-6
 - dataset size: ~50,000
-timely medium
+### timely medium
 * batch size: 128
 * number of frozen layers: 8 of 11
 * learning rate: 1.5e-5
 * dataset size: ~50,000
-timely small
+### timely small
 - batch size: 128
 - number of frozen layers: 8 of 11
 - learning rate: 1.5e-5
