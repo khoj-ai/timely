@@ -120,7 +120,7 @@ While the literature suggests that Matryoshka Loss can help ensure generalizatio
 ### **Triplets**
 While many models like Arctic Embed and Nomic Embed employ triplets instead of query-document pairs during training, we found that it posed no additional improvements in performance on Timely and MTEB.
 
-## Increased Dataset Size
+### Increased Dataset Size
 While the common advice is to improve dataset diversity while scaling the dataset size, we found that larger Timely datasets led to further MTEB degradation. The cause for this is still not fully identified but the theory is that our dataset diversity is still lacking as much of the Arctic Embed finetuning dataset consists of proprietary web data
 ## Model Training Details
 
