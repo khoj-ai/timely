@@ -174,7 +174,8 @@ To replicate dataset generation use the following steps:
 4. Run `py natural_tuples.py` rerunning `lastxgen.py` and `relativedategen.py` with a smaller sample size for improved speed.
 5. Run `py datasetgen2.py`. This will create a csv file in datasets titled `datasets/wiki_date_aware_diverse_v4.csv`. Change as necessary
 6. Convert this csv file to a .txt file and run it through `dataset_linter.py`
-7. The output text file can be used in training.
+8. The output text file can be used in training.
+9. Alternatively, at step 5 `py datasetCombiner.py` followed by `py datasetgen3.py` will create a more diverse dataset used in Experiment 2. Modify the output file of datasetCombiner to match the input file of datasetgen3.
 
 ## Model Training
 1. Start a Google Colab Instance with an A100 for optimal speed
