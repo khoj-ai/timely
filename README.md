@@ -151,6 +151,7 @@ timely small
 | Arctic Small                | 0.8747         | 0.4159  | 0.6529           | 0.612         | 0.586          |
 | Arctic Medium               | 0.8742         | 0.4473  | 0.822            | 0.734         | 0.760          |
 | Arctic Large                | 0.8741         | 0.4597  | 0.7509           | 0.742         | 0.730          |
+
 From these results, we see that our original timely model, while formidable in the Timely benchmarks has a large amount of general reasoning degradation as seen in the QuoraRetrieval and DBPedia scores. Our new models achieve improvements to Timely performance while reducing the degradation in MTEB scores.
 
 ## **Future Work**
