@@ -148,11 +148,11 @@ While the common advice is to improve dataset diversity while scaling the datase
 ## Results
 
 ### Description of Tasks:
-- QuoraRetrieval: An MTEB sentence-to-sentence task that tests a model's retrieval abilities using data from Quora
-- DBPedia: An MTEB sentence-to-paragraph task that tests a model's retrieval abilities using structured data from Wikipedia
-- Timely Wikipedia: A custom Timely task designed to test a model's ability to select between identical documents with different dates given a query using Wikipedia data
-- Timely Google: A custom Timely task designed to test a model's ability to select between identical documents with different dates given a query using Google Answer Question data
-- Timely WikiHow: A custom Timely task designed to test a model's ability to select between identical documents with different dates given a query using WikiHow data
+- **QuoraRetrieval**: An MTEB sentence-to-sentence task that tests a model's retrieval abilities using data from Quora
+- **DBPedia**: An MTEB sentence-to-paragraph task that tests a model's retrieval abilities using structured data from Wikipedia
+- **Timely Wikipedia**: A custom Timely task designed to test a model's ability to select between identical documents with different dates given a query using Wikipedia data
+- **Timely Google**: A custom Timely task designed to test a model's ability to select between identical documents with different dates given a query using Google Answer Question data
+- **Timely WikiHow**: A custom Timely task designed to test a model's ability to select between identical documents with different dates given a query using WikiHow data
 
 |                             | QuoraRetrieval | DBPedia | Timely Wikipedia | Timely Google | Timely WikiHow |
 | --------------------------- | -------------- | ------- | ---------------- | ------------- | -------------- |
